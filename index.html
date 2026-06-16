@@ -400,9 +400,9 @@ victory:'🚀 МИССИЯ ВЫПОЛНЕНА!', fail:'☄️ Сбились с 
 };
 
 // ═══════════════════════════════════════════════
-//  STATE & STORAGE
+//  STATE & STORAGE [FIX] Added missing fields
 // ═══════════════════════════════════════════════
-const DEFAULT_STATE = { version:'2.0', theme:null, unlocked:2, stars:0, completed:[], mistakes:{}, totalAnswered:0, totalCorrect:0, pin:'1234', pinSet:false, hints:3, tablesForFinal:0 };
+const DEFAULT_STATE = { version:'2.1', theme:null, unlocked:2, stars:0, completed:[], mistakes:{}, totalAnswered:0, totalCorrect:0, pin:'1234', pinSet:false, hints:3, finalTestDone:false };
 function loadState() {
   try { const raw = localStorage.getItem('mult_academy_v3'); return raw ? { ...DEFAULT_STATE, ...JSON.parse(raw) } : { ...DEFAULT_STATE }; }
   catch(e) { console.warn('Load state failed', e); return { ...DEFAULT_STATE }; }
@@ -592,7 +592,7 @@ document.getElementById('study-prev').addEventListener('click', () => { sfxClick
 document.getElementById('study-back').addEventListener('click', () => { sfxClick(); showScreen('map'); });
 
 // ═══════════════════════════════════════════════
-//  CHECK / TEST ENGINE
+//  CHECK / TEST ENGINE [FIX] Robust navigation
 // ═══════════════════════════════════════════════
 function generateOptions(correct, count = 4) {
   const opts = new Set([correct]);
@@ -606,7 +606,7 @@ function generateOptions(correct, count = 4) {
 function startCheck(type, count) {
   checkPhase = type; checkIndex = 0; currentLives = 3; isCheckWaiting = false;
   checkQuestions = [];
-  const pool = type === 'final' ? state.completed : [currentTable];
+  const pool = (type === 'final' && state.completed.length > 0) ? state.completed : [currentTable || 2];
   for (let i = 0; i < count; i++) {
     const tbl = pool[Math.floor(Math.random() * pool.length)];
     const b = Math.floor(Math.random() * 10) + 1;
@@ -655,11 +655,8 @@ function handleOptionClick(val, btn) {
     currentLives--; updateLivesUI(); state.totalAnswered++; saveState();
     const key = `${checkQuestions[checkIndex].a}x${checkQuestions[checkIndex].b}`;
     state.mistakes[key] = (state.mistakes[key] || 0) + 1; saveState();
-    if (currentLives <= 0) {
-      showLivesOutModal();
-    } else {
-      document.getElementById('check-feedback').textContent = `Неверно! Осталось ❤️${currentLives}`; document.getElementById('check-feedback').className = 'check-feedback err';
-    }
+    if (currentLives <= 0) { showLivesOutModal(); }
+    else { document.getElementById('check-feedback').textContent = `Неверно! Осталось ❤️${currentLives}`; document.getElementById('check-feedback').className = 'check-feedback err'; }
   }
 }
 document.getElementById('btn-check-next').addEventListener('click', () => {
@@ -692,47 +689,57 @@ document.getElementById('btn-retry-check').addEventListener('click', () => {
   document.getElementById('lives-modal').classList.remove('show');
   sfxClick(); startCheck(checkPhase, checkQuestions.length);
 });
+
+// [FIX] Completely rewritten finishCheck for reliable navigation
 function finishCheck() {
+  const theme = THEMES[state.theme] || THEMES.spiderman;
+  const worldCfg = theme.worlds.find(w => w.n === currentTable) || { icon: '🏆', name: '' };
+  
+  // Reset result screen UI safely
+  document.getElementById('result-mistakes').style.display = 'none';
+  document.getElementById('result-btn-retry').style.display = 'none';
+  document.getElementById('result-score-label').textContent = `из ${checkQuestions.length}`;
+  document.getElementById('result-score').textContent = checkQuestions.length;
+
   if (checkPhase === 'final') {
     sfxVictory(); launchConfetti();
-    document.getElementById('result-icon').textContent = '🏆'; document.getElementById('result-title').textContent = 'ФИНАЛЬНЫЙ ТЕСТ ПРОЙДЕН!';
+    document.getElementById('result-icon').textContent = '🏆';
+    document.getElementById('result-title').textContent = 'ФИНАЛЬНЫЙ ТЕСТ ПРОЙДЕН!';
     document.getElementById('result-sub').textContent = 'Ты настоящий мастер умножения!';
-    document.getElementById('result-score').textContent = checkQuestions.length; document.getElementById('result-score-label').textContent = 'из ' + checkQuestions.length;
-    document.getElementById('result-mistakes').style.display = 'none';
-    document.getElementById('result-btn-main').textContent = 'На карту →'; document.getElementById('result-btn-retry').style.display = 'none';
+    document.getElementById('result-btn-main').textContent = 'На карту →';
     document.getElementById('result-btn-main').onclick = () => { sfxClick(); renderMap(); showScreen('map'); };
     showScreen('result'); return;
   }
-  const theme = THEMES[state.theme], worldCfg = theme.worlds.find(w => w.n === currentTable);
-  const passed = true; // checks are now practice, full completion triggers after study
+
   sfxVictory(); launchConfetti();
-  document.getElementById('result-icon').textContent = worldCfg ? worldCfg.icon : '🏆';
-  document.getElementById('result-title').textContent = checkPhase === 'full' ? theme.victory : 'Проверка пройдена!';
-  document.getElementById('result-sub').textContent = checkPhase === 'full' ? 'Таблица выучена! ⭐' : 'Отличная работа! Продолжаем запоминать.';
-  document.getElementById('result-score').textContent = checkQuestions.length; document.getElementById('result-score-label').textContent = 'из ' + checkQuestions.length;
-  document.getElementById('result-mistakes').style.display = 'none';
-  document.getElementById('result-btn-retry').style.display = 'none';
+  document.getElementById('result-icon').textContent = worldCfg.icon;
+  
   if (checkPhase === 'full') {
+    document.getElementById('result-title').textContent = theme.victory;
+    document.getElementById('result-sub').textContent = 'Таблица выучена! ⭐';
+    document.getElementById('result-btn-main').textContent = 'Продолжить →';
     if (!state.completed.includes(currentTable)) {
-      state.completed.push(currentTable); state.stars++; state.tablesForFinal++;
+      state.completed.push(currentTable); state.stars++;
       const nextTable = currentTable + 1, worldsMax = Math.max(...theme.worlds.map(w => w.n));
       if (nextTable <= worldsMax && state.unlocked < nextTable) state.unlocked = nextTable;
       saveState();
     }
-    document.getElementById('result-btn-main').textContent = 'Продолжить →';
     document.getElementById('result-btn-main').onclick = () => {
       sfxClick();
-      if (state.tablesForFinal >= 3 && !state.finalTestDone) {
+      if (state.completed.length >= 3 && !state.finalTestDone) {
         state.finalTestDone = true; saveState();
         startCheck('final', 15); showScreen('test');
       } else {
         renderMap(); showScreen('map');
       }
     };
-  } else {
+  } else { // mini
+    document.getElementById('result-title').textContent = 'Проверка пройдена!';
+    document.getElementById('result-sub').textContent = 'Отличная работа! Продолжаем запоминать.';
     document.getElementById('result-btn-main').textContent = 'Продолжить учёбу →';
     document.getElementById('result-btn-main').onclick = () => { sfxClick(); renderStudy(); showScreen('study'); };
   }
+  
   showScreen('result');
 }
 
