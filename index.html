@@ -5,17 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#0A0A1A">
+<meta name="theme-color" content="#0F0F1A">
 <title>Академия умножения</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 :root {
-  --primary: #E53935; --primary-dark: #B71C1C;
-  --primary-shadow: rgba(229,57,53,0.4); --primary-shadow-soft: rgba(229,57,53,0.15); --primary-shadow-weak: rgba(229,57,53,0.12);
-  --accent: #FFD600; --accent-shadow: rgba(255,214,0,0.3); --accent-shadow-soft: rgba(255,214,0,0.08); --accent-shadow-weak: rgba(255,214,0,0.06);
-  --bg: #0A0A1A; --surface: #12122A; --surface2: #1A1A35;
+  --primary: #6C63FF; --primary-dark: #5A52D5;
+  --primary-shadow: rgba(108,99,255,0.4); --primary-shadow-soft: rgba(108,99,255,0.15); --primary-shadow-weak: rgba(108,99,255,0.12);
+  --accent: #00D4AA; --accent-shadow: rgba(0,212,170,0.3); --accent-shadow-soft: rgba(0,212,170,0.08); --accent-shadow-weak: rgba(0,212,170,0.06);
+  --bg: #0F0F1A; --surface: #1A1A2E; --surface2: #252540;
   --text: #FFFFFF; --text2: rgba(255,255,255,0.7); --text3: rgba(255,255,255,0.4);
-  --green: #00C853; --red: #FF1744;
+  --green: #00D4AA; --red: #FF6B6B;
   --radius: 16px; --radius-sm: 10px;
   --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
@@ -44,6 +44,8 @@ html, body { height: 100%; background: var(--bg); color: var(--text); font-famil
   user-select: none; position: relative;
 }
 .player-card:active { transform: scale(0.97); }
+.player-card { transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s; }
+.player-card:hover { box-shadow: 0 4px 20px var(--primary-shadow-weak); }
 .player-card.has-progress { border-color: rgba(255,255,255,0.18); }
 .player-avatar { width: 48px; height: 48px; border-radius: 14px; background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0; }
 .player-info { flex: 1; min-width: 0; }
@@ -98,7 +100,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text); font-famil
 .theme-card .t-name { font-size: 15px; font-weight: 700; color: var(--text); }
 .theme-card .t-desc { font-size: 12px; color: var(--text3); margin-top: 2px; }
 .theme-card.selected { border-color: var(--accent); background: var(--accent-shadow-soft); }
-.btn-start { width: 100%; max-width: 420px; height: 58px; background: var(--primary); color: #fff; font-size: 18px; font-weight: 800; border: none; border-radius: var(--radius); cursor: pointer; letter-spacing: 0.5px; transition: background 0.2s, transform 0.1s; box-shadow: 0 4px 20px var(--primary-shadow); }
+.btn-start { width: 100%; max-width: 420px; height: 58px; background: var(--primary); color: #fff; font-size: 18px; font-weight: 800; border: none; border-radius: var(--radius); cursor: pointer; letter-spacing: 0.5px; transition: background 0.2s, transform 0.1s; box-shadow: 0 4px 25px var(--primary-shadow); }
 .btn-start:active { transform: scale(0.97); background: var(--primary-dark); }
 
 /* ── MAP ── */
@@ -117,7 +119,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text); font-famil
 .world-node:active { transform: scale(0.98); }
 .world-node.locked { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
 .world-node.current { border-color: var(--accent); background: var(--accent-shadow-weak); animation: pulse-border 2s ease-in-out infinite; }
-.world-node.done { border-color: var(--green); background: rgba(0,200,83,0.05); }
+.world-node.done { border-color: var(--green); background: rgba(0,212,170,0.05); }
 @keyframes pulse-border { 0%,100% { box-shadow: 0 0 0 0 var(--accent-shadow); } 50% { box-shadow: 0 0 0 8px rgba(0,0,0,0); } }
 .world-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0; }
 .world-info { flex: 1; min-width: 0; }
@@ -132,7 +134,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text); font-famil
 .btn-back { width: 40px; height: 40px; background: var(--surface); border: none; border-radius: 12px; color: var(--text2); font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s; }
 .btn-back:active { background: var(--surface2); }
 .study-progress-bar { flex: 1; height: 6px; background: var(--surface); border-radius: 3px; overflow: hidden; }
-.study-progress-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.4s ease; }
+.study-progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); border-radius: 3px; transition: width 0.4s ease; }
 .study-counter { font-size: 14px; color: var(--text3); font-weight: 600; white-space: nowrap; }
 .study-card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; flex: 1; padding: 10px 0; width: 100%; }
 .study-world-icon { font-size: clamp(48px,12vw,64px); animation: float 3s ease-in-out infinite; }
@@ -148,8 +150,8 @@ html, body { height: 100%; background: var(--bg); color: var(--text); font-famil
 .btn-nav { flex: 1; height: 58px; border-radius: var(--radius); border: none; font-size: 17px; font-weight: 700; cursor: pointer; transition: transform 0.1s, background 0.2s; }
 .btn-nav:active { transform: scale(0.97); }
 .btn-prev { background: var(--surface2); color: var(--text2); }
-.btn-next { background: var(--primary); color: #fff; box-shadow: 0 4px 16px var(--primary-shadow-soft); }
-.btn-test-go { background: var(--green); color: #fff; box-shadow: 0 4px 16px rgba(0,200,83,0.35); }
+.btn-next { background: var(--primary); color: #fff; box-shadow: 0 4px 20px var(--primary-shadow-soft); }
+.btn-test-go { background: var(--green); color: #fff; box-shadow: 0 4px 16px var(--accent-shadow); }
 
 /* ── CHECK/TEST ── */
 #screen-test { align-items: center; padding: 16px 20px calc(20px + var(--safe-bottom)); gap: 12px; }
@@ -158,7 +160,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text); font-famil
 .lives { display: flex; align-items: center; gap: 4px; font-weight: 700; }
 .hints-disp { display: flex; align-items: center; gap: 4px; font-weight: 700; }
 .check-prog-bar { width: 100%; height: 6px; background: var(--surface); border-radius: 3px; overflow: hidden; margin-bottom: 8px; }
-.check-prog-fill { height: 100%; background: var(--primary); border-radius: 3px; transition: width 0.4s ease; }
+.check-prog-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); border-radius: 3px; transition: width 0.4s ease; }
 .check-q-count { font-size: 13px; color: var(--text3); text-align: right; margin-bottom: 8px; }
 .check-question { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; width: 100%; }
 .check-world-icon { font-size: clamp(36px,10vw,48px); }
@@ -167,8 +169,8 @@ html, body { height: 100%; background: var(--bg); color: var(--text); font-famil
 .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; max-width: 320px; margin-top: 8px; }
 .option-btn { height: 58px; background: var(--surface); border: 2px solid rgba(255,255,255,0.1); border-radius: var(--radius); color: var(--text); font-size: 24px; font-weight: 700; cursor: pointer; transition: transform 0.1s, background 0.2s, border-color 0.2s; display: flex; align-items: center; justify-content: center; }
 .option-btn:active { transform: scale(0.96); }
-.option-btn.correct { background: rgba(0,200,83,0.15); border-color: var(--green); color: var(--green); }
-.option-btn.wrong { background: rgba(255,23,68,0.15); border-color: var(--red); color: var(--red); animation: shake 0.4s; pointer-events: none; }
+.option-btn.correct { background: rgba(0,212,170,0.15); border-color: var(--green); color: var(--green); }
+.option-btn.wrong { background: rgba(255,107,107,0.15); border-color: var(--red); color: var(--red); animation: shake 0.4s; pointer-events: none; }
 .option-btn.hidden { opacity: 0; pointer-events: none; }
 @keyframes shake { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-6px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); } }
 .check-actions { display: flex; gap: 10px; width: 100%; max-width: 320px; margin-top: 8px; }
@@ -180,8 +182,8 @@ html, body { height: 100%; background: var(--bg); color: var(--text); font-famil
 .check-feedback.err { color: var(--red); }
 
 /* ── RESULT ── */
-#screen-result { align-items: center; justify-content: center; padding: 32px 20px calc(32px + var(--safe-bottom)); gap: 16px; background: radial-gradient(ellipse at 50% 30%, rgba(0,200,83,0.08) 0%, transparent 60%); }
-#screen-result.fail-bg { background: radial-gradient(ellipse at 50% 30%, rgba(255,23,68,0.08) 0%, transparent 60%); }
+#screen-result { align-items: center; justify-content: center; padding: 32px 20px calc(32px + var(--safe-bottom)); gap: 16px; background: radial-gradient(ellipse at 50% 30%, rgba(0,212,170,0.08) 0%, transparent 60%); }
+#screen-result.fail-bg { background: radial-gradient(ellipse at 50% 30%, rgba(255,107,107,0.08) 0%, transparent 60%); }
 .result-icon { font-size: clamp(60px,15vw,80px); text-align: center; line-height: 1; }
 .result-title { font-size: clamp(22px,6vw,30px); font-weight: 900; text-align: center; }
 .result-sub { font-size: 16px; color: var(--text2); text-align: center; }
@@ -192,7 +194,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text); font-famil
 .mistake-chip { display: inline-block; background: rgba(255,23,68,0.15); border: 1px solid rgba(255,23,68,0.3); border-radius: 8px; padding: 4px 10px; font-size: 14px; font-weight: 700; margin: 3px; color: #FF6B6B; }
 .btn-big { width: 100%; height: 60px; border-radius: var(--radius); border: none; font-size: 18px; font-weight: 800; cursor: pointer; transition: transform 0.1s, background 0.2s; }
 .btn-big:active { transform: scale(0.97); }
-.btn-primary { background: var(--primary); color: #fff; box-shadow: 0 4px 20px var(--primary-shadow); }
+.btn-primary { background: var(--primary); color: #fff; box-shadow: 0 4px 25px var(--primary-shadow); }
 .btn-secondary { background: var(--surface2); color: var(--text2); }
 
 /* ── UNLOCK ── */
@@ -210,7 +212,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text); font-famil
 .admin-header h2 { font-size: 20px; font-weight: 800; }
 .admin-tabs { display: flex; gap: 8px; }
 .admin-tab { flex: 1; height: 38px; border-radius: 10px; border: none; font-size: 13px; font-weight: 700; cursor: pointer; background: var(--surface); color: var(--text3); transition: background 0.2s, color 0.2s; }
-.admin-tab.active { background: var(--primary); color: #fff; }
+.admin-tab.active { background: var(--primary); color: #fff; box-shadow: 0 2px 10px var(--primary-shadow); }
 .admin-panel { display: none; flex-direction: column; gap: 14px; }
 .admin-panel.active { display: flex; }
 
@@ -234,8 +236,8 @@ html, body { height: 100%; background: var(--bg); color: var(--text); font-famil
 .ap-actions { display: flex; gap: 6px; flex-shrink: 0; }
 .ap-btn { height: 34px; padding: 0 12px; border-radius: 8px; border: none; font-size: 12px; font-weight: 700; cursor: pointer; transition: transform 0.1s; }
 .ap-btn:active { transform: scale(0.95); }
-.ap-btn-reset { background: rgba(255,23,68,0.12); color: var(--red); border: 1px solid rgba(255,23,68,0.2); }
-.ap-btn-hints { background: rgba(255,214,0,0.12); color: var(--accent); border: 1px solid rgba(255,214,0,0.2); }
+.ap-btn-reset { background: rgba(255,107,107,0.12); color: var(--red); border: 1px solid rgba(255,107,107,0.2); }
+.ap-btn-hints { background: rgba(0,212,170,0.12); color: var(--accent); border: 1px solid rgba(0,212,170,0.2); }
 .ap-btn-del { background: rgba(255,255,255,0.05); color: var(--text3); border: 1px solid rgba(255,255,255,0.1); }
 
 /* Hard examples table */
@@ -246,9 +248,9 @@ html, body { height: 100%; background: var(--bg); color: var(--text); font-famil
 .hard-ex { font-size: 16px; font-weight: 700; }
 .hard-count { font-size: 13px; color: var(--red); font-weight: 700; }
 
-.btn-reset { width: 100%; height: 50px; border-radius: var(--radius-sm); border: 1px solid rgba(255,23,68,0.3); background: rgba(255,23,68,0.08); color: var(--red); font-size: 15px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
-.btn-reset:active { background: rgba(255,23,68,0.18); }
-.btn-give-hints-all { width: 100%; height: 50px; border-radius: var(--radius-sm); border: 1px solid rgba(255,214,0,0.3); background: rgba(255,214,0,0.08); color: var(--accent); font-size: 15px; font-weight: 700; cursor: pointer; }
+.btn-reset { width: 100%; height: 50px; border-radius: var(--radius-sm); border: 1px solid rgba(255,107,107,0.3); background: rgba(255,107,107,0.08); color: var(--red); font-size: 15px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+.btn-reset:active { background: rgba(255,107,107,0.18); }
+.btn-give-hints-all { width: 100%; height: 50px; border-radius: var(--radius-sm); border: 1px solid rgba(0,212,170,0.3); background: rgba(0,212,170,0.08); color: var(--accent); font-size: 15px; font-weight: 700; cursor: pointer; }
 
 /* ── PIN OVERLAY ── */
 #pin-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 100; backdrop-filter: blur(4px); padding: 20px; }
@@ -259,7 +261,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text); font-famil
 .pin-sub { font-size: 13px; color: var(--text3); text-align: center; }
 .pin-dots { display: flex; gap: 12px; }
 .pin-dot { width: 16px; height: 16px; border-radius: 50%; background: var(--surface2); border: 2px solid rgba(255,255,255,0.2); transition: background 0.15s; }
-.pin-dot.filled { background: var(--accent); border-color: var(--accent); }
+.pin-dot.filled { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 8px var(--accent-shadow); }
 .pin-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; }
 .pin-key { height: 52px; background: var(--surface2); border: none; border-radius: 12px; color: var(--text); font-size: 20px; font-weight: 700; cursor: pointer; transition: background 0.15s, transform 0.1s; }
 .pin-key:active { transform: scale(0.94); background: rgba(255,255,255,0.12); }
@@ -278,7 +280,7 @@ html, body { height: 100%; background: var(--bg); color: var(--text); font-famil
 .modal-btn { flex: 1; height: 48px; border-radius: 12px; border: none; font-size: 15px; font-weight: 700; cursor: pointer; transition: transform 0.1s; }
 .modal-btn:active { transform: scale(0.96); }
 .modal-btn.cancel { background: var(--surface2); color: var(--text2); }
-.modal-btn.confirm { background: var(--red); color: #fff; }
+.modal-btn.confirm { background: #FF6B6B; color: #fff; }
 
 #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 200; }
 .music-btn { width: 36px; height: 36px; background: var(--surface2); border: none; border-radius: 50%; color: var(--text2); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; flex-shrink: 0; }
@@ -339,11 +341,12 @@ html, body { height: 100%; background: var(--bg); color: var(--text); font-famil
 <div id="screen-map" class="screen">
   <div class="map-header">
     <div class="map-header-left">
-      <div class="map-player-avatar" id="map-player-avatar" title="Сменить игрока">🕷️</div>
-      <div class="map-player-name" id="map-player-name">Игрок</div>
+      <div class="map-player-avatar" id="map-player-avatar" title="Сменить игрока">${p.avatar}</div>
+      <div class="map-player-name" id="map-player-name">${p.name}</div>
     </div>
     <div class="map-header-right">
       <button class="music-btn" id="btn-music">🎵</button>
+      <button class="music-btn" id="btn-leaderboard" title="Рейтинг">🏆</button>
       <div class="stars-badge"><span>⭐</span><span id="star-count">0</span></div>
       <button class="btn-parent" id="btn-change-theme">🎨</button>
     </div>
@@ -427,14 +430,15 @@ html, body { height: 100%; background: var(--bg); color: var(--text); font-famil
     <button class="admin-tab active" data-tab="overview">📊 Обзор</button>
     <button class="admin-tab" data-tab="players">👥 Игроки</button>
     <button class="admin-tab" data-tab="hard">⚡ Ошибки</button>
+    <button class="admin-tab" onclick="sfxClick();renderLeaderboard();showScreen('leaderboard')">🏆 Рейтинг</button>
   </div>
 
   <!-- Обзор -->
   <div class="admin-panel active" id="panel-overview">
     <div class="stats-total-grid" id="stats-total-grid"></div>
     <button class="btn-give-hints-all" id="btn-give-hints-all">💡 Дать всем игрокам +3 подсказки</button>
-    <button class="btn-reset" id="btn-reset-all-mistakes">Сбросить все статистики ошибок</button>
-    <button class="btn-reset" id="btn-full-reset-all" style="border-color:rgba(255,255,255,0.1);color:var(--text3)">⚠️ Полный сброс (все игроки)</button>
+    <button class="btn-reset" id="btn-reset-all-mistakes">Сбросить статистику ошибок (все)</button>
+    <button class="btn-reset" id="btn-full-reset-all" style="border-color:rgba(255,107,107,0.2);color:var(--text3)">⚠️ Полный сброс (все игроки)</button>
   </div>
 
   <!-- Игроки -->
@@ -446,6 +450,15 @@ html, body { height: 100%; background: var(--bg); color: var(--text); font-famil
   <div class="admin-panel" id="panel-hard">
     <div class="hard-list"><h3>ТОП СЛОЖНЫХ ПРИМЕРОВ (все игроки)</h3><div id="hard-items-all"></div></div>
   </div>
+</div>
+
+<!-- ══ LEADERBOARD ══ -->
+<div id="screen-leaderboard" class="screen">
+  <div class="admin-header">
+    <button class="btn-back" id="lb-back">←</button>
+    <h2>🏆 Рейтинг</h2>
+  </div>
+  <div class="players-grid" id="lb-grid" style="margin-top:16px"></div>
 </div>
 
 <!-- ══ PIN OVERLAY ══ -->
@@ -491,22 +504,22 @@ html, body { height: 100%; background: var(--bg); color: var(--text); font-famil
 //  THEMES
 // ═══════════════════════════════════════════════
 const THEMES = {
-  spiderman: { name:'Человек-паук', color:'#E53935', primaryDark:'#B71C1C', accent:'#FFD600', bg:'#0A0A1A', surface:'#12122A', surface2:'#1A1A35', emoji:'🕷️',
+  spiderman: { name:'Человек-паук', color:'#E53935', primaryDark:'#B71C1C', accent:'#FF6B6B', bg:'#0A0A1A', surface:'#12122A', surface2:'#1A1A35', emoji:'🕷️',
     worlds:[{n:2,name:'Квартал',icon:'🏘️'},{n:3,name:'Крыши',icon:'🏙️'},{n:4,name:'Мост',icon:'🌉'},{n:5,name:'Сити',icon:'🌆'},{n:6,name:'Небоскрёб',icon:'🏢'},{n:7,name:'Метро',icon:'🚇'},{n:8,name:'Музей',icon:'🏛️'},{n:9,name:'Замок злодея',icon:'🏰'}],
     victory:'🦸 ПАУТИНА СПЛЕТЕНА!', fail:'😵 Паутина порвалась!', goodWords:['Прыжок!','Паутина!','Точно!','Герой!','Бум!'] },
-  ducks: { name:'Утки', color:'#1E88E5', primaryDark:'#0D47A1', accent:'#FFEB3B', bg:'#062024', surface:'#0D343A', surface2:'#16484F', emoji:'🦆',
+  ducks: { name:'Утки', color:'#1E88E5', primaryDark:'#0D47A1', accent:'#FFD93D', bg:'#062024', surface:'#0D343A', surface2:'#16484F', emoji:'🦆',
     worlds:[{n:2,name:'Пруд',icon:'🌊'},{n:3,name:'Камыши',icon:'🌾'},{n:4,name:'Луг',icon:'🌻'},{n:5,name:'Ферма',icon:'🚜'},{n:6,name:'Озеро',icon:'🏞️'},{n:7,name:'Болото',icon:'🐸'},{n:8,name:'Река',icon:'🌊'},{n:9,name:'Море',icon:'🌅'}],
     victory:'🦆 КРЯ-КРЯ ПОБЕДА!', fail:'🦆 Утка расстроилась!', goodWords:['Кря!','Плюх!','Крылья!','Молодец!','Кряк!'] },
-  planes: { name:'Самолёты', color:'#1565C0', primaryDark:'#0D47A1', accent:'#80D8FF', bg:'#040F1F', surface:'#0C2238', surface2:'#1A3A52', emoji:'✈️',
+  planes: { name:'Самолёты', color:'#1565C0', primaryDark:'#0D47A1', accent:'#64B5F6', bg:'#040F1F', surface:'#0C2238', surface2:'#1A3A52', emoji:'✈️',
     worlds:[{n:2,name:'Взлётная',icon:'🛫'},{n:3,name:'Облака',icon:'☁️'},{n:4,name:'Высота 1',icon:'🌤️'},{n:5,name:'Высота 2',icon:'⛅'},{n:6,name:'Стратосфера',icon:'🌌'},{n:7,name:'Гроза',icon:'⛈️'},{n:8,name:'Над миром',icon:'🌍'},{n:9,name:'Космос',icon:'🚀'}],
     victory:'🛩️ ПОСАДКА МАСТЕРА!', fail:'✈️ Турбулентность!', goodWords:['Взлёт!','Скорость!','Точно!','Пилот!','Выше!'] },
-  cars: { name:'Тачки', color:'#E53935', primaryDark:'#B71C1C', accent:'#FFEB3B', bg:'#15151A', surface:'#212229', surface2:'#2D2F39', emoji:'🏎️',
+  cars: { name:'Тачки', color:'#E53935', primaryDark:'#B71C1C', accent:'#FF8A65', bg:'#15151A', surface:'#212229', surface2:'#2D2F39', emoji:'🏎️',
     worlds:[{n:2,name:'Стоянка',icon:'🅿️'},{n:3,name:'Трасса',icon:'🛣️'},{n:4,name:'Трек',icon:'🏁'},{n:5,name:'Пит-стоп',icon:'⛽'},{n:6,name:'Дрифт',icon:'💨'},{n:7,name:'Горы',icon:'⛰️'},{n:8,name:'Ночная гонка',icon:'🌃'},{n:9,name:'Финишная',icon:'🏆'}],
     victory:'🏁 ФИНИШ ЧЕМПИОНА!', fail:'💨 Занесло!', goodWords:['Газ!','Скорость!','Дрифт!','Финиш!','Гонщик!'] },
-  dragons: { name:'Драконы', color:'#7C4DFF', primaryDark:'#512DA8', accent:'#FFC107', bg:'#0F0A1C', surface:'#1C1430', surface2:'#2A1F44', emoji:'🐉',
+  dragons: { name:'Драконы', color:'#7C4DFF', primaryDark:'#512DA8', accent:'#CE93D8', bg:'#0F0A1C', surface:'#1C1430', surface2:'#2A1F44', emoji:'🐉',
     worlds:[{n:2,name:'Деревня',icon:'🏘️'},{n:3,name:'Лес',icon:'🌲'},{n:4,name:'Пещера',icon:'🕳️'},{n:5,name:'Подземелье',icon:'🗝️'},{n:6,name:'Башня',icon:'🗼'},{n:7,name:'Сокровищница',icon:'💎'},{n:8,name:'Логово дракона',icon:'🐉'},{n:9,name:'Трон',icon:'👑'}],
     victory:'🐉 ДРАКОН ПОБЕЖДЁН!', fail:'🐉 Дракон сильнее... пока!', goodWords:['Огонь!','Магия!','Точно!','Герой!','Клад!'] },
-  space: { name:'Космос', color:'#3949AB', primaryDark:'#1A237E', accent:'#00E5FF', bg:'#05060F', surface:'#10131F', surface2:'#1A1F33', emoji:'🚀',
+  space: { name:'Космос', color:'#3949AB', primaryDark:'#1A237E', accent:'#4DD0E1', bg:'#05060F', surface:'#10131F', surface2:'#1A1F33', emoji:'🚀',
     worlds:[{n:2,name:'Старт',icon:'🚀'},{n:3,name:'Орбита',icon:'🛰️'},{n:4,name:'Луна',icon:'🌕'},{n:5,name:'Астероиды',icon:'☄️'},{n:6,name:'Марс',icon:'🌋'},{n:7,name:'Сатурн',icon:'🪐'},{n:8,name:'Галактика',icon:'🌌'},{n:9,name:'Чёрная дыра',icon:'🕳️'}],
     victory:'🚀 МИССИЯ ВЫПОЛНЕНА!', fail:'☄️ Сбились с курса!', goodWords:['Старт!','Ракета!','Точно!','Космонавт!','Орбита!'] }
 };
@@ -527,7 +540,7 @@ let global = loadGlobal();
 //  PLAYERS STORAGE
 // ═══════════════════════════════════════════════
 const MAX_PLAYERS = 5;
-const PLAYER_DEFAULT = () => ({ theme: null, unlocked: 2, stars: 0, completed: [], mistakes: {}, totalAnswered: 0, totalCorrect: 0, hints: 3 });
+const PLAYER_DEFAULT = () => ({ theme: null, unlocked: 2, stars: 0, completed: [], mistakes: {}, totalAnswered: 0, totalCorrect: 0, hints: 3, rating: 0 });
 
 function loadPlayers() {
   try { const r = localStorage.getItem('mla_players'); return r ? JSON.parse(r) : []; }
@@ -537,7 +550,11 @@ function savePlayers() { localStorage.setItem('mla_players', JSON.stringify(play
 let players = loadPlayers();
 
 function getPlayer(id) { return players.find(p => p.id === id); }
-function savePlayer() { savePlayers(); }
+function calcRating(p) {
+  const acc = p.totalAnswered > 0 ? (p.totalCorrect / p.totalAnswered) * 100 : 0;
+  return Math.round(acc + p.stars * 5);
+}
+function savePlayer() { if(currentPlayer) currentPlayer.rating = calcRating(currentPlayer); savePlayers(); }
 
 // ═══════════════════════════════════════════════
 //  CURRENT SESSION
@@ -605,7 +622,7 @@ function updateMusicBtn(){document.querySelectorAll('.music-btn').forEach(b=>b.t
 // ═══════════════════════════════════════════════
 const canvas=document.getElementById('confetti-canvas'),ctx2d=canvas.getContext('2d');
 let particles=[],animFrame=null;
-function launchConfetti(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;particles=[];for(let i=0;i<120;i++)particles.push({x:Math.random()*canvas.width,y:-10-Math.random()*100,vx:(Math.random()-0.5)*6,vy:2+Math.random()*5,color:['#FFD600','#E53935','#00C853','#00E5FF','#FF6D00','#E040FB'][Math.floor(Math.random()*6)],size:6+Math.random()*8,rot:Math.random()*360,rotV:(Math.random()-0.5)*8});if(animFrame)cancelAnimationFrame(animFrame);animateConfetti();setTimeout(()=>{particles=[];ctx2d.clearRect(0,0,canvas.width,canvas.height);},3500);}
+function launchConfetti(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;particles=[];for(let i=0;i<120;i++)particles.push({x:Math.random()*canvas.width,y:-10-Math.random()*100,vx:(Math.random()-0.5)*6,vy:2+Math.random()*5,color:['#6C63FF','#00D4AA','#FF6B6B','#FFD93D','#64B5F6','#CE93D8'][Math.floor(Math.random()*6)],size:6+Math.random()*8,rot:Math.random()*360,rotV:(Math.random()-0.5)*8});if(animFrame)cancelAnimationFrame(animFrame);animateConfetti();setTimeout(()=>{particles=[];ctx2d.clearRect(0,0,canvas.width,canvas.height);},3500);}
 function animateConfetti(){ctx2d.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=0.08;p.rot+=p.rotV;ctx2d.save();ctx2d.translate(p.x,p.y);ctx2d.rotate(p.rot*Math.PI/180);ctx2d.fillStyle=p.color;ctx2d.fillRect(-p.size/2,-p.size/2,p.size,p.size*0.5);ctx2d.restore();});particles=particles.filter(p=>p.y<canvas.height+20);if(particles.length>0)animFrame=requestAnimationFrame(animateConfetti);}
 
 // ═══════════════════════════════════════════════
@@ -640,7 +657,7 @@ function renderPlayerSelect() {
         <div class="player-name">${p.name}</div>
         <div class="player-meta">Таблиц: ${tablesDone}/8 · Точность: ${acc}</div>
       </div>
-      <div class="player-stars-badge">⭐ ${p.stars}</div>`;
+      <div class="player-stars-badge">⭐ ${p.stars} · 🏆 ${p.rating||0}</div>`;
     card.addEventListener('click', () => { sfxClick(); selectPlayer(p.id); });
     grid.appendChild(card);
   });
@@ -658,7 +675,7 @@ function selectPlayer(id) {
   currentPlayer = getPlayer(id);
   if (!currentPlayer.theme) {
     selectedTheme = null;
-    openThemeScreen();
+    openThemeScreen(false);
   } else {
     applyTheme(currentPlayer.theme);
     renderMap();
@@ -720,14 +737,16 @@ function openThemeScreen(fromMap = false) {
   document.getElementById('theme-sub').textContent = currentPlayer?.name ? `Тема для ${currentPlayer.name}` : 'Выбери тему';
   if (fromMap || currentPlayer?.theme) { backBtn.classList.add('show'); goBtn.textContent = 'Сохранить →'; }
   else { backBtn.classList.remove('show'); goBtn.textContent = 'Начать! →'; }
+  else { backBtn.classList.remove('show'); goBtn.textContent = 'Начать! →'; }
   showScreen('theme');
 }
 document.querySelectorAll('.theme-card').forEach(card => card.addEventListener('click', () => { sfxClick(); document.querySelectorAll('.theme-card').forEach(c=>c.classList.remove('selected')); card.classList.add('selected'); selectedTheme = card.dataset.theme; }));
-document.getElementById('theme-back').addEventListener('click', () => { sfxClick(); if (currentPlayer) { renderMap(); showScreen('map'); } else { renderPlayerSelect(); showScreen('players'); } });
+document.getElementById('theme-back').addEventListener('click', () => { sfxClick(); if (currentPlayer) { renderMap(); showScreen('map'); } else { if(global.pinSet){openPin(()=>{renderPlayerSelect();showScreen('players');});}else{renderPlayerSelect();showScreen('players');} } });
 document.getElementById('btn-theme-go').addEventListener('click', () => {
   if (!selectedTheme) { document.querySelectorAll('.theme-card')[0].classList.add('selected'); selectedTheme = 'spiderman'; }
   sfxClick();
   if (currentPlayer) { currentPlayer.theme = selectedTheme; savePlayer(); applyTheme(selectedTheme); renderMap(); showScreen('map'); }
+  // If no player yet, we need to create one or show message
 });
 document.getElementById('btn-change-theme').addEventListener('click', () => { sfxClick(); openThemeScreen(true); });
 
@@ -736,10 +755,11 @@ document.getElementById('btn-change-theme').addEventListener('click', () => { sf
 // ═══════════════════════════════════════════════
 function renderMap() {
   const p = currentPlayer;
+  if (!p) { renderPlayerSelect(); showScreen('players'); return; }
   const theme = THEMES[p.theme];
   document.getElementById('star-count').textContent = p.stars;
-  document.getElementById('map-player-avatar').textContent = p.avatar;
-  document.getElementById('map-player-name').textContent = p.name;
+  if(p) document.getElementById('map-player-avatar').textContent = p.avatar;
+  if(p) document.getElementById('map-player-name').textContent = p.name;
   applyTheme(p.theme);
   const container = document.getElementById('world-path'); container.innerHTML = '';
   theme.worlds.forEach((world, idx) => {
@@ -755,9 +775,9 @@ function renderMap() {
     container.appendChild(node);
   });
 }
-// Click avatar/name → back to player select
-document.getElementById('map-player-avatar').addEventListener('click', () => { sfxClick(); stopMusic(); renderPlayerSelect(); showScreen('players'); });
-document.getElementById('map-player-name').addEventListener('click', () => { sfxClick(); stopMusic(); renderPlayerSelect(); showScreen('players'); });
+// Click avatar/name → back to player select (requires PIN)
+document.getElementById('map-player-avatar').addEventListener('click', () => { sfxClick(); stopMusic(); openPin(()=>{renderPlayerSelect();showScreen('players');}); });
+document.getElementById('map-player-name').addEventListener('click', () => { sfxClick(); stopMusic(); openPin(()=>{renderPlayerSelect();showScreen('players');}); });
 
 // ═══════════════════════════════════════════════
 //  STUDY FLOW
@@ -784,7 +804,7 @@ document.getElementById('study-next').addEventListener('click', () => {
   else renderStudyCard();
 });
 document.getElementById('study-prev').addEventListener('click', () => { sfxClick(); if(studyIndex>0){studyIndex--;renderStudyCard();} });
-document.getElementById('study-back').addEventListener('click', () => { sfxClick(); showScreen('map'); });
+document.getElementById('study-back').addEventListener('click', () => { sfxClick(); renderMap(); showScreen('map'); });
 
 // ═══════════════════════════════════════════════
 //  CHECK ENGINE
@@ -949,7 +969,7 @@ document.getElementById('pin-cancel').addEventListener('click',()=>document.getE
 //  ADMIN SCREEN
 // ═══════════════════════════════════════════════
 document.getElementById('btn-admin-entry').addEventListener('click',()=>{sfxClick();openPin(()=>openAdmin());});
-document.getElementById('admin-back').addEventListener('click',()=>{sfxClick();renderPlayerSelect();showScreen('players');});
+document.getElementById('admin-back').addEventListener('click',()=>{sfxClick();stopMusic();currentPlayerId=null;currentPlayer=null;if(global.pinSet){openPin(()=>{renderPlayerSelect();showScreen('players');});}else{renderPlayerSelect();showScreen('players');}});
 
 document.querySelectorAll('.admin-tab').forEach(tab=>{
   tab.addEventListener('click',()=>{
@@ -963,6 +983,26 @@ document.querySelectorAll('.admin-tab').forEach(tab=>{
 
 function openAdmin(){renderAdmin();showScreen('admin');}
 
+function renderLeaderboard(){
+  const grid=document.getElementById('lb-grid'); grid.innerHTML='';
+  const sorted=[...players].sort((a,b)=>(b.rating||0)-(a.rating||0));
+  if(sorted.length===0){grid.innerHTML='<div style="color:var(--text3);text-align:center;padding:40px">Нет игроков</div>';return;}
+  sorted.forEach((p,i)=>{
+    const medals=['🥇','🥈','🥉']; const medal=i<3?medals[i]:(i+1);
+    const acc=p.totalAnswered>0?Math.round((p.totalCorrect/p.totalAnswered)*100)+'%':'—';
+    const card=document.createElement('div'); card.className='player-card has-progress';
+    card.innerHTML=`
+      <div class="player-avatar">${medal}</div>
+      <div class="player-avatar" style="margin-left:-34px;position:relative;z-index:1">${p.avatar}</div>
+      <div class="player-info" style="margin-left:8px">
+        <div class="player-name">${p.name}</div>
+        <div class="player-meta">Таблиц: ${p.completed.length}/8 · Точность: ${acc} · ⭐${p.stars}</div>
+      </div>
+      <div class="player-stars-badge" style="font-size:22px;font-weight:900;color:var(--primary)">${p.rating||0}</div>`;
+    grid.appendChild(card);
+  });
+}
+
 function renderAdmin(){renderAdminOverview();renderAdminPlayers();renderAdminHard();}
 
 function renderAdminOverview(){
@@ -972,6 +1012,7 @@ function renderAdminOverview(){
   const totalTables=players.reduce((s,p)=>s+p.completed.length,0);
   const acc=totalAnswered>0?Math.round((totalCorrect/totalAnswered)*100)+'%':'—';
   document.getElementById('stats-total-grid').innerHTML=`
+    <div class="stat-card"><div class="stat-label">ИГРОКОВ</div><div class="stat-value">${players.length}</div><div class="stat-icon">👥</div></div>
     <div class="stat-card"><div class="stat-label">ПРИМЕРОВ РЕШЕНО</div><div class="stat-value">${totalAnswered}</div><div class="stat-icon">📊</div></div>
     <div class="stat-card"><div class="stat-label">ЗВЁЗДЫ (все)</div><div class="stat-value">${totalStars}</div><div class="stat-icon">⭐</div></div>
     <div class="stat-card"><div class="stat-label">ТАБЛИЦ ВЫУЧЕНО</div><div class="stat-value">${totalTables}</div><div class="stat-icon">📚</div></div>
@@ -988,7 +1029,7 @@ function renderAdminPlayers(){
       <div class="ap-avatar">${p.avatar}</div>
       <div class="ap-info">
         <div class="ap-name">${p.name}</div>
-        <div class="ap-meta">Таблиц: ${p.completed.length}/8 · ⭐${p.stars} · ${acc} · 💡${p.hints}</div>
+        <div class="ap-meta">Таблиц: ${p.completed.length}/8 · ⭐${p.stars} · 🏆${p.rating||0} · ${acc} · 💡${p.hints}</div>
       </div>
       <div class="ap-actions">
         <button class="ap-btn ap-btn-hints" title="Дать подсказки">💡+3</button>
@@ -1057,14 +1098,21 @@ document.getElementById('modal-confirm').addEventListener('click',()=>{document.
 //  MUSIC BUTTONS
 // ═══════════════════════════════════════════════
 document.getElementById('btn-music').addEventListener('click',toggleMusic);
+document.getElementById('btn-leaderboard').addEventListener('click',()=>{sfxClick();renderLeaderboard();showScreen('leaderboard');});
+document.getElementById('lb-back').addEventListener('click',()=>{sfxClick();renderMap();showScreen('map');});
 document.getElementById('btn-music-study').addEventListener('click',toggleMusic);
 document.getElementById('btn-music-test').addEventListener('click',toggleMusic);
 
 // ═══════════════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════════════
-renderPlayerSelect();
-showScreen('players');
+// Check if PIN is needed
+if (players.length > 0 && global.pinSet && !currentPlayerId) {
+  openPin(() => { renderPlayerSelect(); showScreen('players'); });
+} else {
+  renderPlayerSelect();
+  showScreen('players');
+}
 
 })();
 </script>
