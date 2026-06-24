@@ -563,7 +563,7 @@ let currentPlayerId = null;
 let currentPlayer = null; // shortcut
 let currentTable = null;
 let studyIndex = 0;
-let checkPhase = null, checkQuestions = [], checkIndex = 0, currentLives = 3, isCheckWaiting = false, currentCorrect = 0;
+let checkPhase = null, checkQuestions = [], checkIndex = 0, currentLives = 3, isCheckWaiting = false, currentCorrect = 0, currentCorrectCount = 0;
 let selectedTheme = null;
 let editingPlayerId = null; // null = new
 
@@ -768,7 +768,7 @@ function renderMap() {
     const node = document.createElement('div');
     node.className = 'world-node' + (isLocked?' locked':'') + (isCurrent?' current':'') + (isDone?' done':'');
     node.innerHTML = `${isCurrent?'<div class="current-badge">👆 ТВОЯ ЦЕЛЬ</div>':''}
-      <div class="world-icon" style="background:${isLocked?'rgba(255,255,255,0.05)':'color-mix(in srgb,var(--accent) 15%,var(--surface))'}">${isLocked?'🔒':world.icon}</div>
+      <div class="world-icon" style="background:${isLocked?'rgba(255,255,255,0.05)':'rgba(255,255,255,0.06)'}">${isLocked?'🔒':world.icon}</div>
       <div class="world-info"><div class="world-name">${world.name}</div><div class="world-label">${isLocked?'Закрыто':isDone?'Выучено ✅':'Открыто'}</div></div>
       <div>${isDone?'⭐':''}</div><div class="world-table-num">× ${table}</div>`;
     if (!isLocked) node.addEventListener('click', () => { sfxClick(); currentTable=table; studyIndex=0; renderStudy(); showScreen('study'); });
@@ -848,7 +848,7 @@ function handleOptionClick(val, btn) {
     sfxCorrect(); btn.classList.add('correct');
     document.getElementById('cq-blank').textContent=currentCorrect;
     document.getElementById('check-feedback').textContent='Молодец! ⭐+1'; document.getElementById('check-feedback').className='check-feedback ok';
-    currentPlayer.stars++; currentPlayer.totalCorrect++; currentPlayer.totalAnswered++; savePlayer();
+    currentCorrectCount++; currentPlayer.stars++; currentPlayer.totalCorrect++; currentPlayer.totalAnswered++; savePlayer();
     document.getElementById('star-count').textContent=currentPlayer.stars;
     isCheckWaiting=true; allBtns.forEach(b=>b.style.pointerEvents='none');
     document.getElementById('btn-check-next').style.display='block';
@@ -861,14 +861,14 @@ function handleOptionClick(val, btn) {
       isCheckWaiting=true; allBtns.forEach(b=>b.style.pointerEvents='none');
       document.getElementById('check-feedback').textContent=`Игра окончена! ${checkQuestions[checkIndex].a}×${checkQuestions[checkIndex].b}=${currentCorrect}`; document.getElementById('check-feedback').className='check-feedback err';
       document.getElementById('btn-check-next').textContent='Начать снова'; document.getElementById('btn-check-next').style.display='block';
-      document.getElementById('btn-check-next').onclick=()=>{sfxClick();startCheck(checkPhase,checkQuestions.length);};
+      document.getElementById('btn-check-next').dataset.retry='1';
     } else {
-      document.getElementById('check-feedback').textContent=`Неверно! Осталось ❤️${currentLives}`; document.getElementById('check-feedback').className='check-feedback err';
+      const qErr=checkQuestions[checkIndex]; document.getElementById('check-feedback').textContent=`Неверно! ${qErr.a}×${qErr.b}=${currentCorrect} ❤️${currentLives}`; document.getElementById('check-feedback').className='check-feedback err';
     }
   }
 }
 document.getElementById('btn-check-next').addEventListener('click', () => {
-  if(document.getElementById('btn-check-next').textContent==='Начать снова')return;
+  if(document.getElementById('btn-check-next').dataset.retry==='1'){sfxClick();startCheck(checkPhase,checkQuestions.length);return;}
   sfxClick(); checkIndex++; isCheckWaiting=false;
   if(checkIndex<checkQuestions.length)renderCheckQuestion(); else finishCheck();
 });
@@ -885,7 +885,7 @@ function finishCheck(){
   document.getElementById('result-mistakes').style.display='none';
   document.getElementById('result-btn-retry').style.display='none';
   document.getElementById('result-total').textContent=checkQuestions.length;
-  document.getElementById('result-score').textContent=checkQuestions.length;
+  document.getElementById('result-score').textContent=currentCorrectCount;
 
   if(checkPhase==='final'){
     sfxVictory(); launchConfetti();
@@ -917,7 +917,7 @@ function finishCheck(){
     document.getElementById('result-title').textContent='Проверка пройдена!';
     document.getElementById('result-sub').textContent='Отличная работа! Продолжаем.';
     document.getElementById('result-btn-main').textContent='Продолжить учёбу →';
-    document.getElementById('result-btn-main').onclick=()=>{sfxClick();studyIndex=0;renderStudy();showScreen('study');};
+    document.getElementById('result-btn-main').onclick=()=>{sfxClick();renderStudy();showScreen('study');};
   }
   showScreen('result');
 }
