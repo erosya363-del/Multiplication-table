@@ -10,30 +10,79 @@
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 :root {
---primary: #E53935; --primary-dark: #B71C1C;
---primary-shadow: rgba(229,57,53,0.4); --primary-shadow-soft: rgba(229,57,53,0.15); --primary-shadow-weak: rgba(229,57,53,0.12);
---accent: #FFD600; --accent-shadow: rgba(255,214,0,0.3); --accent-shadow-soft: rgba(255,214,0,0.08); --accent-shadow-weak: rgba(255,214,0,0.06);
---bg: #0A0A1A; --surface: #12122A; --surface2: #1A1A35;
---text: #FFFFFF; --text2: rgba(255,255,255,0.7); --text3: rgba(255,255,255,0.4);
---green: #00C853; --red: #FF1744;
---radius: 16px; --radius-sm: 10px;
---safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --primary: #E53935; --primary-dark: #B71C1C;
+  --primary-shadow: rgba(229,57,53,0.4); --primary-shadow-soft: rgba(229,57,53,0.15); --primary-shadow-weak: rgba(229,57,53,0.12);
+  --accent: #FFD600; --accent-shadow: rgba(255,214,0,0.3); --accent-shadow-soft: rgba(255,214,0,0.08); --accent-shadow-weak: rgba(255,214,0,0.06);
+  --bg: #0A0A1A; --surface: #12122A; --surface2: #1A1A35;
+  --text: #FFFFFF; --text2: rgba(255,255,255,0.7); --text3: rgba(255,255,255,0.4);
+  --green: #00C853; --red: #FF1744;
+  --radius: 16px; --radius-sm: 10px;
+  --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
-html, body, #app, .screen, .world-node, .theme-card, .stat-card, .hard-list,
-.pin-box, .test-input, .study-dot, .map-header, .world-icon, .btn-start,
-.btn-big, .btn-nav, .btn-check, .modal-box, .option-btn {
-transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, opacity 0.2s ease;
-}
-html, body {
-height: 100%; background: var(--bg); color: var(--text);
-font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
-overflow: hidden; touch-action: manipulation;
-padding-top: var(--safe-top); padding-bottom: var(--safe-bottom);
-}
+html, body { height: 100%; background: var(--bg); color: var(--text); font-family: -apple-system, 'Segoe UI', system-ui, sans-serif; overflow: hidden; touch-action: manipulation; padding-top: var(--safe-top); padding-bottom: var(--safe-bottom); }
 #app { height: 100vh; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; position: relative; }
 .screen { display: none; flex-direction: column; height: 100%; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding: 0; scrollbar-width: none; }
 .screen::-webkit-scrollbar { display: none; }
 .screen.active { display: flex; }
+
+/* ── PLAYER SELECT ── */
+#screen-players {
+  align-items: center; justify-content: flex-start;
+  padding: 24px 20px calc(24px + var(--safe-bottom));
+  gap: 16px;
+  background: radial-gradient(ellipse at 50% 0%, var(--primary-shadow-soft) 0%, transparent 70%);
+}
+.players-logo { font-size: clamp(36px,10vw,48px); text-align: center; }
+.players-title { font-size: clamp(22px,6vw,28px); font-weight: 800; text-align: center; }
+.players-sub { font-size: 14px; color: var(--text2); text-align: center; }
+.players-grid { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 400px; }
+.player-card {
+  background: var(--surface); border: 2px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius); padding: 14px 16px;
+  display: flex; align-items: center; gap: 14px;
+  cursor: pointer; transition: border-color 0.2s, transform 0.15s;
+  user-select: none; position: relative;
+}
+.player-card:active { transform: scale(0.97); }
+.player-card.has-progress { border-color: rgba(255,255,255,0.18); }
+.player-avatar { width: 48px; height: 48px; border-radius: 14px; background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0; }
+.player-info { flex: 1; min-width: 0; }
+.player-name { font-size: 16px; font-weight: 700; }
+.player-meta { font-size: 12px; color: var(--text3); margin-top: 2px; }
+.player-stars-badge { font-size: 14px; color: var(--accent); font-weight: 700; }
+.player-add { border: 2px dashed rgba(255,255,255,0.15); background: transparent; }
+.player-add .player-avatar { background: transparent; font-size: 22px; color: var(--text3); }
+.player-add .player-name { color: var(--text3); }
+.btn-admin-entry {
+  width: 100%; max-width: 400px; height: 48px;
+  background: transparent; border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius); color: var(--text3); font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: border-color 0.2s, color 0.2s;
+}
+.btn-admin-entry:active { border-color: rgba(255,255,255,0.3); color: var(--text2); }
+
+/* ── ADD/EDIT PLAYER ── */
+#screen-edit-player {
+  align-items: center; justify-content: center;
+  padding: 24px 20px calc(24px + var(--safe-bottom)); gap: 20px;
+}
+.edit-title { font-size: 22px; font-weight: 800; text-align: center; }
+.avatar-picker { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; width: 100%; max-width: 320px; }
+.avatar-opt {
+  width: 100%; aspect-ratio: 1; background: var(--surface); border: 2px solid transparent;
+  border-radius: 14px; font-size: 28px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: border-color 0.2s, transform 0.15s;
+}
+.avatar-opt:active { transform: scale(0.93); }
+.avatar-opt.selected { border-color: var(--accent); background: var(--accent-shadow-soft); }
+.name-input {
+  width: 100%; max-width: 320px; height: 56px;
+  background: var(--surface); border: 2px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius); color: var(--text); font-size: 18px; font-weight: 700;
+  text-align: center; outline: none; transition: border-color 0.2s;
+}
+.name-input:focus { border-color: var(--accent); }
+.edit-btns { display: flex; gap: 10px; width: 100%; max-width: 320px; }
 
 /* ── THEME SELECTION ── */
 #screen-theme { align-items: center; justify-content: center; padding: 24px 20px; gap: 16px; background: radial-gradient(ellipse at 50% 0%, var(--primary-shadow-soft) 0%, transparent 70%); position: relative; }
@@ -43,7 +92,7 @@ padding-top: var(--safe-top); padding-bottom: var(--safe-bottom);
 .theme-title { font-size: clamp(24px, 7vw, 28px); font-weight: 800; text-align: center; letter-spacing: -0.5px; }
 .theme-sub { font-size: 15px; color: var(--text2); text-align: center; }
 .themes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; max-width: 420px; }
-.theme-card { background: var(--surface); border: 2px solid transparent; border-radius: var(--radius); padding: 16px 12px; text-align: center; cursor: pointer; transition: border-color 0.2s, transform 0.15s, background 0.2s; user-select: none; }
+.theme-card { background: var(--surface); border: 2px solid transparent; border-radius: var(--radius); padding: 16px 12px; text-align: center; cursor: pointer; transition: border-color 0.2s, transform 0.15s; user-select: none; }
 .theme-card:active { transform: scale(0.96); }
 .theme-card .t-icon { font-size: clamp(32px, 8vw, 42px); display: block; margin-bottom: 8px; }
 .theme-card .t-name { font-size: 15px; font-weight: 700; color: var(--text); }
@@ -52,31 +101,32 @@ padding-top: var(--safe-top); padding-bottom: var(--safe-bottom);
 .btn-start { width: 100%; max-width: 420px; height: 58px; background: var(--primary); color: #fff; font-size: 18px; font-weight: 800; border: none; border-radius: var(--radius); cursor: pointer; letter-spacing: 0.5px; transition: background 0.2s, transform 0.1s; box-shadow: 0 4px 20px var(--primary-shadow); }
 .btn-start:active { transform: scale(0.97); background: var(--primary-dark); }
 
-/* ── MAP SCREEN ── */
+/* ── MAP ── */
 #screen-map { background: radial-gradient(ellipse at 50% -20%, var(--primary-shadow-weak) 0%, transparent 60%); }
-.map-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px 12px; position: sticky; top: 0; background: var(--bg); z-index: 10; border-bottom: 1px solid rgba(255,255,255,0.06); }
-.map-header h1 { font-size: 20px; font-weight: 800; }
-.stars-badge { display: flex; align-items: center; gap: 6px; background: var(--surface); border-radius: 20px; padding: 6px 14px; font-size: 16px; font-weight: 700; color: var(--accent); }
-.stars-badge span { font-size: 20px; }
-.btn-parent { background: transparent; border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 6px 14px; color: var(--text2); font-size: 13px; cursor: pointer; transition: border-color 0.2s, color 0.2s; white-space: nowrap; }
-.btn-parent:active { color: var(--text); border-color: rgba(255,255,255,0.4); }
-.world-path { display: flex; flex-direction: column; align-items: center; padding: 20px 20px calc(40px + var(--safe-bottom)); gap: 0; position: relative; }
-.world-connector { width: 2px; height: 28px; background: rgba(255,255,255,0.1); margin: 0; flex-shrink: 0; }
-.world-node { width: 100%; max-width: 380px; background: var(--surface); border: 2px solid rgba(255,255,255,0.08); border-radius: var(--radius); padding: 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: border-color 0.2s, transform 0.15s, background 0.2s; position: relative; user-select: none; }
+.map-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px 10px; position: sticky; top: 0; background: var(--bg); z-index: 10; border-bottom: 1px solid rgba(255,255,255,0.06); gap: 8px; }
+.map-header-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.map-player-avatar { width: 36px; height: 36px; border-radius: 10px; background: var(--surface2); font-size: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: pointer; }
+.map-player-name { font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px; cursor: pointer; }
+.map-header-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.stars-badge { display: flex; align-items: center; gap: 5px; background: var(--surface); border-radius: 20px; padding: 5px 12px; font-size: 15px; font-weight: 700; color: var(--accent); }
+.btn-parent { background: transparent; border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 5px 12px; color: var(--text2); font-size: 12px; cursor: pointer; transition: border-color 0.2s; white-space: nowrap; }
+.btn-parent:active { border-color: rgba(255,255,255,0.4); color: var(--text); }
+.world-path { display: flex; flex-direction: column; align-items: center; padding: 20px 20px calc(40px + var(--safe-bottom)); gap: 0; }
+.world-connector { width: 2px; height: 28px; background: rgba(255,255,255,0.1); flex-shrink: 0; }
+.world-node { width: 100%; max-width: 380px; background: var(--surface); border: 2px solid rgba(255,255,255,0.08); border-radius: var(--radius); padding: 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: border-color 0.2s, transform 0.15s; position: relative; user-select: none; }
 .world-node:active { transform: scale(0.98); }
 .world-node.locked { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
 .world-node.current { border-color: var(--accent); background: var(--accent-shadow-weak); animation: pulse-border 2s ease-in-out infinite; }
 .world-node.done { border-color: var(--green); background: rgba(0,200,83,0.05); }
-@keyframes pulse-border { 0%, 100% { box-shadow: 0 0 0 0 var(--accent-shadow); } 50% { box-shadow: 0 0 0 8px rgba(0,0,0,0); } }
+@keyframes pulse-border { 0%,100% { box-shadow: 0 0 0 0 var(--accent-shadow); } 50% { box-shadow: 0 0 0 8px rgba(0,0,0,0); } }
 .world-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0; }
 .world-info { flex: 1; min-width: 0; }
 .world-name { font-size: 16px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .world-label { font-size: 12px; color: var(--text3); margin-top: 2px; }
-.world-stars { font-size: 18px; flex-shrink: 0; }
 .world-table-num { font-size: 13px; font-weight: 800; color: var(--text3); min-width: 32px; text-align: right; flex-shrink: 0; }
-.current-badge { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #000; font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 10px; white-space: nowrap; letter-spacing: 0.3px; }
+.current-badge { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #000; font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 10px; white-space: nowrap; }
 
-/* ── STUDY SCREEN ── */
+/* ── STUDY ── */
 #screen-study { align-items: center; justify-content: space-between; padding: 16px 20px calc(20px + var(--safe-bottom)); }
 .study-header { width: 100%; display: flex; align-items: center; gap: 12px; }
 .btn-back { width: 40px; height: 40px; background: var(--surface); border: none; border-radius: 12px; color: var(--text2); font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s; }
@@ -85,9 +135,9 @@ padding-top: var(--safe-top); padding-bottom: var(--safe-bottom);
 .study-progress-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.4s ease; }
 .study-counter { font-size: 14px; color: var(--text3); font-weight: 600; white-space: nowrap; }
 .study-card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; flex: 1; padding: 10px 0; width: 100%; }
-.study-world-icon { font-size: clamp(48px, 12vw, 64px); animation: float 3s ease-in-out infinite; }
-@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-.study-equation { font-size: clamp(36px, 10vw, 52px); font-weight: 900; letter-spacing: -2px; text-align: center; line-height: 1.1; word-break: break-all; }
+.study-world-icon { font-size: clamp(48px,12vw,64px); animation: float 3s ease-in-out infinite; }
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.study-equation { font-size: clamp(36px,10vw,52px); font-weight: 900; letter-spacing: -2px; text-align: center; line-height: 1.1; }
 .study-equation .op { color: var(--text3); }
 .study-equation .result { color: var(--accent); }
 .study-hint { font-size: 14px; color: var(--text3); margin-top: 8px; text-align: center; }
@@ -99,81 +149,106 @@ padding-top: var(--safe-top); padding-bottom: var(--safe-bottom);
 .btn-nav:active { transform: scale(0.97); }
 .btn-prev { background: var(--surface2); color: var(--text2); }
 .btn-next { background: var(--primary); color: #fff; box-shadow: 0 4px 16px var(--primary-shadow-soft); }
-.btn-test { background: var(--green); color: #fff; box-shadow: 0 4px 16px rgba(0,200,83,0.35); }
+.btn-test-go { background: var(--green); color: #fff; box-shadow: 0 4px 16px rgba(0,200,83,0.35); }
 
-/* ── CHECK / TEST SCREEN ── */
+/* ── CHECK/TEST ── */
 #screen-test { align-items: center; padding: 16px 20px calc(20px + var(--safe-bottom)); gap: 12px; }
 .check-header { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
 .check-status { display: flex; gap: 16px; font-size: 18px; }
-.lives, .hints { display: flex; align-items: center; gap: 4px; font-weight: 700; }
+.lives { display: flex; align-items: center; gap: 4px; font-weight: 700; }
+.hints-disp { display: flex; align-items: center; gap: 4px; font-weight: 700; }
 .check-prog-bar { width: 100%; height: 6px; background: var(--surface); border-radius: 3px; overflow: hidden; margin-bottom: 8px; }
 .check-prog-fill { height: 100%; background: var(--primary); border-radius: 3px; transition: width 0.4s ease; }
 .check-q-count { font-size: 13px; color: var(--text3); text-align: right; margin-bottom: 8px; }
 .check-question { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; width: 100%; }
-.check-world-icon { font-size: clamp(36px, 10vw, 48px); }
-.check-eq { font-size: clamp(36px, 11vw, 56px); font-weight: 900; letter-spacing: -2px; text-align: center; line-height: 1.1; word-break: break-all; }
-.check-eq .blank { color: var(--accent); border-bottom: 4px solid var(--accent); min-width: clamp(40px, 12vw, 60px); display: inline-block; text-align: center; padding-bottom: 2px; }
+.check-world-icon { font-size: clamp(36px,10vw,48px); }
+.check-eq { font-size: clamp(36px,11vw,56px); font-weight: 900; letter-spacing: -2px; text-align: center; line-height: 1.1; }
+.check-eq .blank { color: var(--accent); border-bottom: 4px solid var(--accent); min-width: clamp(40px,12vw,60px); display: inline-block; text-align: center; padding-bottom: 2px; }
 .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; max-width: 320px; margin-top: 8px; }
 .option-btn { height: 58px; background: var(--surface); border: 2px solid rgba(255,255,255,0.1); border-radius: var(--radius); color: var(--text); font-size: 24px; font-weight: 700; cursor: pointer; transition: transform 0.1s, background 0.2s, border-color 0.2s; display: flex; align-items: center; justify-content: center; }
 .option-btn:active { transform: scale(0.96); }
 .option-btn.correct { background: rgba(0,200,83,0.15); border-color: var(--green); color: var(--green); }
-.option-btn.wrong { background: rgba(255,23,68,0.15); border-color: var(--red); color: var(--red); animation: shake 0.4s; }
+.option-btn.wrong { background: rgba(255,23,68,0.15); border-color: var(--red); color: var(--red); animation: shake 0.4s; pointer-events: none; }
 .option-btn.hidden { opacity: 0; pointer-events: none; }
-@keyframes shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-6px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); } }
+@keyframes shake { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-6px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); } }
 .check-actions { display: flex; gap: 10px; width: 100%; max-width: 320px; margin-top: 8px; }
-.btn-hint, .btn-buy-life { flex: 1; height: 44px; border-radius: 12px; border: none; font-size: 14px; font-weight: 700; cursor: pointer; transition: transform 0.1s, background 0.2s; }
-.btn-hint { background: var(--surface2); color: var(--accent); }
-.btn-buy-life { background: rgba(255,23,68,0.1); color: var(--red); }
-.btn-hint:active, .btn-buy-life:active { transform: scale(0.96); }
-.btn-hint:disabled, .btn-buy-life:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-hint { flex: 1; height: 44px; border-radius: 12px; border: none; font-size: 14px; font-weight: 700; cursor: pointer; background: var(--surface2); color: var(--accent); transition: transform 0.1s; }
+.btn-hint:active { transform: scale(0.96); }
+.btn-hint:disabled { opacity: 0.4; cursor: not-allowed; }
 .check-feedback { font-size: 18px; font-weight: 800; min-height: 28px; text-align: center; margin-top: 8px; }
 .check-feedback.ok { color: var(--green); }
 .check-feedback.err { color: var(--red); }
 
-/* ── RESULT SCREEN ── */
+/* ── RESULT ── */
 #screen-result { align-items: center; justify-content: center; padding: 32px 20px calc(32px + var(--safe-bottom)); gap: 16px; background: radial-gradient(ellipse at 50% 30%, rgba(0,200,83,0.08) 0%, transparent 60%); }
 #screen-result.fail-bg { background: radial-gradient(ellipse at 50% 30%, rgba(255,23,68,0.08) 0%, transparent 60%); }
-.result-icon { font-size: clamp(60px, 15vw, 80px); text-align: center; line-height: 1; }
-.result-title { font-size: clamp(24px, 7vw, 32px); font-weight: 900; text-align: center; }
+.result-icon { font-size: clamp(60px,15vw,80px); text-align: center; line-height: 1; }
+.result-title { font-size: clamp(22px,6vw,30px); font-weight: 900; text-align: center; }
 .result-sub { font-size: 16px; color: var(--text2); text-align: center; }
-.result-score { font-size: clamp(48px, 15vw, 72px); font-weight: 900; color: var(--accent); text-align: center; line-height: 1; }
+.result-score { font-size: clamp(48px,15vw,72px); font-weight: 900; color: var(--accent); text-align: center; line-height: 1; }
 .result-score-label { font-size: 16px; color: var(--text3); text-align: center; margin-top: -8px; }
 .result-mistakes { width: 100%; background: var(--surface); border-radius: var(--radius); padding: 16px; display: none; }
-.result-mistakes h3 { font-size: 14px; font-weight: 700; color: var(--text3); margin-bottom: 10px; letter-spacing: 0.5px; }
+.result-mistakes h3 { font-size: 14px; font-weight: 700; color: var(--text3); margin-bottom: 10px; }
 .mistake-chip { display: inline-block; background: rgba(255,23,68,0.15); border: 1px solid rgba(255,23,68,0.3); border-radius: 8px; padding: 4px 10px; font-size: 14px; font-weight: 700; margin: 3px; color: #FF6B6B; }
-.btn-big { width: 100%; height: 60px; border-radius: var(--radius); border: none; font-size: 18px; font-weight: 800; cursor: pointer; transition: transform 0.1s, background 0.2s; letter-spacing: 0.3px; }
+.btn-big { width: 100%; height: 60px; border-radius: var(--radius); border: none; font-size: 18px; font-weight: 800; cursor: pointer; transition: transform 0.1s, background 0.2s; }
 .btn-big:active { transform: scale(0.97); }
 .btn-primary { background: var(--primary); color: #fff; box-shadow: 0 4px 20px var(--primary-shadow); }
 .btn-secondary { background: var(--surface2); color: var(--text2); }
 
-/* ── UNLOCK ANIMATION ── */
+/* ── UNLOCK ── */
 #screen-unlock { align-items: center; justify-content: center; gap: 24px; padding: 40px 20px calc(40px + var(--safe-bottom)); background: radial-gradient(ellipse at 50% 30%, var(--accent-shadow-soft) 0%, transparent 60%); }
 .unlock-sparkles { font-size: 36px; text-align: center; animation: spin 1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
-.unlock-icon { font-size: clamp(70px, 20vw, 100px); text-align: center; animation: pop 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+.unlock-icon { font-size: clamp(70px,20vw,100px); text-align: center; animation: pop 0.5s cubic-bezier(0.34,1.56,0.64,1); }
 @keyframes pop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 .unlock-title { font-size: 28px; font-weight: 900; text-align: center; color: var(--accent); }
 .unlock-name { font-size: 20px; color: var(--text2); text-align: center; }
 
-/* ── PARENT SCREEN ── */
-#screen-parent { padding: 20px 20px calc(20px + var(--safe-bottom)); gap: 16px; }
-.parent-header { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
-.parent-header h2 { font-size: 20px; font-weight: 800; }
-.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+/* ── ADMIN SCREEN ── */
+#screen-admin { padding: 16px 20px calc(20px + var(--safe-bottom)); gap: 16px; }
+.admin-header { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
+.admin-header h2 { font-size: 20px; font-weight: 800; }
+.admin-tabs { display: flex; gap: 8px; }
+.admin-tab { flex: 1; height: 38px; border-radius: 10px; border: none; font-size: 13px; font-weight: 700; cursor: pointer; background: var(--surface); color: var(--text3); transition: background 0.2s, color 0.2s; }
+.admin-tab.active { background: var(--primary); color: #fff; }
+.admin-panel { display: none; flex-direction: column; gap: 14px; }
+.admin-panel.active { display: flex; }
+
+/* Stat overview */
+.stats-total-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .stat-card { background: var(--surface); border-radius: var(--radius-sm); padding: 14px; }
 .stat-label { font-size: 12px; color: var(--text3); margin-bottom: 6px; }
 .stat-value { font-size: 28px; font-weight: 800; }
 .stat-icon { font-size: 20px; }
+
+/* Players list in admin */
+.admin-players-list { display: flex; flex-direction: column; gap: 10px; }
+.admin-player-row {
+  background: var(--surface); border-radius: var(--radius-sm); padding: 14px 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+.ap-avatar { width: 44px; height: 44px; border-radius: 12px; background: var(--surface2); font-size: 24px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.ap-info { flex: 1; min-width: 0; }
+.ap-name { font-size: 15px; font-weight: 700; }
+.ap-meta { font-size: 12px; color: var(--text3); margin-top: 2px; }
+.ap-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.ap-btn { height: 34px; padding: 0 12px; border-radius: 8px; border: none; font-size: 12px; font-weight: 700; cursor: pointer; transition: transform 0.1s; }
+.ap-btn:active { transform: scale(0.95); }
+.ap-btn-reset { background: rgba(255,23,68,0.12); color: var(--red); border: 1px solid rgba(255,23,68,0.2); }
+.ap-btn-hints { background: rgba(255,214,0,0.12); color: var(--accent); border: 1px solid rgba(255,214,0,0.2); }
+.ap-btn-del { background: rgba(255,255,255,0.05); color: var(--text3); border: 1px solid rgba(255,255,255,0.1); }
+
+/* Hard examples table */
 .hard-list { background: var(--surface); border-radius: var(--radius-sm); padding: 16px; }
 .hard-list h3 { font-size: 14px; color: var(--text3); margin-bottom: 10px; font-weight: 700; letter-spacing: 0.5px; }
 .hard-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
 .hard-item:last-child { border-bottom: none; }
 .hard-ex { font-size: 16px; font-weight: 700; }
 .hard-count { font-size: 13px; color: var(--red); font-weight: 700; }
+
 .btn-reset { width: 100%; height: 50px; border-radius: var(--radius-sm); border: 1px solid rgba(255,23,68,0.3); background: rgba(255,23,68,0.08); color: var(--red); font-size: 15px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
 .btn-reset:active { background: rgba(255,23,68,0.18); }
-.btn-give-hints { width: 100%; height: 50px; border-radius: var(--radius-sm); border: 1px solid rgba(255,214,0,0.3); background: rgba(255,214,0,0.08); color: var(--accent); font-size: 15px; font-weight: 700; cursor: pointer; transition: background 0.2s; margin-bottom: 8px; }
-.btn-give-hints:active { background: rgba(255,214,0,0.18); }
+.btn-give-hints-all { width: 100%; height: 50px; border-radius: var(--radius-sm); border: 1px solid rgba(255,214,0,0.3); background: rgba(255,214,0,0.08); color: var(--accent); font-size: 15px; font-weight: 700; cursor: pointer; }
 
 /* ── PIN OVERLAY ── */
 #pin-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 100; backdrop-filter: blur(4px); padding: 20px; }
@@ -190,230 +265,290 @@ padding-top: var(--safe-top); padding-bottom: var(--safe-bottom);
 .pin-key:active { transform: scale(0.94); background: rgba(255,255,255,0.12); }
 .pin-key.del { font-size: 16px; color: var(--text3); }
 .pin-key.empty { background: transparent; cursor: default; pointer-events: none; }
-.pin-error { color: var(--red); font-size: 13px; font-weight: 700; min-height: 16px; text-align: center;}
+.pin-error { color: var(--red); font-size: 13px; font-weight: 700; min-height: 16px; text-align: center; }
 .btn-pin-cancel { background: transparent; border: none; color: var(--text3); font-size: 14px; cursor: pointer; padding: 8px 12px; }
 
 /* ── MODALS ── */
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 300; backdrop-filter: blur(4px); padding: 20px; }
 .modal-overlay.show { display: flex; }
-.modal-box { background: var(--surface); border-radius: 20px; padding: 24px; width: 100%; max-width: 320px; text-align: center; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
+.modal-box { background: var(--surface); border-radius: 20px; padding: 24px; width: 100%; max-width: 320px; text-align: center; border: 1px solid rgba(255,255,255,0.1); }
 .modal-title { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
 .modal-text { font-size: 14px; color: var(--text2); margin-bottom: 20px; line-height: 1.5; }
 .modal-btns { display: flex; gap: 10px; }
-.modal-btn { flex: 1; height: 48px; border-radius: 12px; border: none; font-size: 15px; font-weight: 700; cursor: pointer; transition: transform 0.1s, background 0.2s; }
+.modal-btn { flex: 1; height: 48px; border-radius: 12px; border: none; font-size: 15px; font-weight: 700; cursor: pointer; transition: transform 0.1s; }
 .modal-btn:active { transform: scale(0.96); }
 .modal-btn.cancel { background: var(--surface2); color: var(--text2); }
 .modal-btn.confirm { background: var(--red); color: #fff; }
 
-/* ── CONFETTI CANVAS ── */
 #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 200; }
 .music-btn { width: 36px; height: 36px; background: var(--surface2); border: none; border-radius: 50%; color: var(--text2); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; flex-shrink: 0; }
 .music-btn:active { background: rgba(255,255,255,0.12); }
 
-@media (max-height: 650px), (max-width: 360px) {
-.theme-logo { font-size: 32px; } .theme-title { font-size: 22px; } .theme-card { padding: 12px 8px; } .theme-card .t-icon { font-size: 28px; }
-.btn-start { height: 50px; font-size: 16px; } .study-card { gap: 8px; padding: 5px 0; } .study-equation { font-size: 36px; }
-.btn-nav { height: 50px; font-size: 15px; } .check-eq { font-size: 40px; } .option-btn { height: 50px; font-size: 20px; }
-.result-score { font-size: 56px; } .result-icon { font-size: 60px; } .btn-big { height: 52px; font-size: 16px; } .unlock-icon { font-size: 70px; } .unlock-title { font-size: 24px; }
+@media (max-height: 650px),(max-width: 360px) {
+  .theme-card { padding: 12px 8px; } .theme-card .t-icon { font-size: 28px; }
+  .btn-start { height: 50px; font-size: 16px; } .study-equation { font-size: 36px; }
+  .btn-nav { height: 50px; font-size: 15px; } .check-eq { font-size: 40px; }
+  .option-btn { height: 50px; font-size: 20px; } .result-score { font-size: 56px; }
+  .btn-big { height: 52px; font-size: 16px; }
 }
 </style>
 </head>
 <body>
 <canvas id="confetti-canvas"></canvas>
 <div id="app">
-<!-- THEME SELECTION -->
-<div id="screen-theme" class="screen active">
-<button class="btn-back" id="theme-back" title="Назад" aria-label="Назад">←</button>
-<span class="theme-logo">🎮</span>
-<div class="theme-title">Академия умножения</div>
-<div class="theme-sub">Выбери свой мир!</div>
-<div class="themes-grid">
-<div class="theme-card" data-theme="spiderman" role="button" aria-label="Тема Человек-паук"><span class="t-icon">🕷️</span><div class="t-name">Человек-паук</div><div class="t-desc">Нью-Йорк ждёт!</div></div>
-<div class="theme-card" data-theme="ducks" role="button" aria-label="Тема Утки"><span class="t-icon">🦆</span><div class="t-name">Утки</div><div class="t-desc">Кря-кря!</div></div>
-<div class="theme-card" data-theme="planes" role="button" aria-label="Тема Самолёты"><span class="t-icon">✈️</span><div class="t-name">Самолёты</div><div class="t-desc">Взлёт!</div></div>
-<div class="theme-card" data-theme="cars" role="button" aria-label="Тема Тачки"><span class="t-icon">🏎️</span><div class="t-name">Тачки</div><div class="t-desc">Погнали!</div></div>
-<div class="theme-card" data-theme="dragons" role="button" aria-label="Тема Драконы"><span class="t-icon">🐉</span><div class="t-name">Драконы</div><div class="t-desc">Замки и сокровища!</div></div>
-<div class="theme-card" data-theme="space" role="button" aria-label="Тема Космос"><span class="t-icon">🚀</span><div class="t-name">Космос</div><div class="t-desc">К звёздам!</div></div>
-</div>
-<button class="btn-start" id="btn-go" aria-label="Начать обучение">Начать! →</button>
+
+<!-- ══ PLAYER SELECT ══ -->
+<div id="screen-players" class="screen active">
+  <div class="players-logo">🎮</div>
+  <div class="players-title">Академия умножения</div>
+  <div class="players-sub">Кто будет учиться?</div>
+  <div class="players-grid" id="players-grid"></div>
+  <button class="btn-admin-entry" id="btn-admin-entry">🔐 Кабинет администратора</button>
 </div>
 
-<!-- MAP SCREEN -->
+<!-- ══ ADD/EDIT PLAYER ══ -->
+<div id="screen-edit-player" class="screen">
+  <button class="btn-back" id="edit-back">←</button>
+  <div class="edit-title" id="edit-player-title">Новый игрок</div>
+  <div class="avatar-picker" id="avatar-picker"></div>
+  <input type="text" class="name-input" id="player-name-input" placeholder="Имя игрока" maxlength="12" autocomplete="off">
+  <div class="edit-btns">
+    <button class="btn-big btn-secondary" id="edit-cancel-btn" style="height:52px">Отмена</button>
+    <button class="btn-big btn-primary" id="edit-save-btn" style="height:52px">Сохранить →</button>
+  </div>
+</div>
+
+<!-- ══ THEME SELECTION ══ -->
+<div id="screen-theme" class="screen">
+  <button class="btn-back" id="theme-back">←</button>
+  <span class="theme-logo">🎨</span>
+  <div class="theme-title">Выбери свой мир!</div>
+  <div class="theme-sub" id="theme-sub">Выбери тему для игры</div>
+  <div class="themes-grid">
+    <div class="theme-card" data-theme="spiderman"><span class="t-icon">🕷️</span><div class="t-name">Человек-паук</div><div class="t-desc">Нью-Йорк ждёт!</div></div>
+    <div class="theme-card" data-theme="ducks"><span class="t-icon">🦆</span><div class="t-name">Утки</div><div class="t-desc">Кря-кря!</div></div>
+    <div class="theme-card" data-theme="planes"><span class="t-icon">✈️</span><div class="t-name">Самолёты</div><div class="t-desc">Взлёт!</div></div>
+    <div class="theme-card" data-theme="cars"><span class="t-icon">🏎️</span><div class="t-name">Тачки</div><div class="t-desc">Погнали!</div></div>
+    <div class="theme-card" data-theme="dragons"><span class="t-icon">🐉</span><div class="t-name">Драконы</div><div class="t-desc">Замки и сокровища!</div></div>
+    <div class="theme-card" data-theme="space"><span class="t-icon">🚀</span><div class="t-name">Космос</div><div class="t-desc">К звёздам!</div></div>
+  </div>
+  <button class="btn-start" id="btn-theme-go">Начать! →</button>
+</div>
+
+<!-- ══ MAP ══ -->
 <div id="screen-map" class="screen">
-<div class="map-header">
-<div><div style="font-size:13px;color:var(--text3);margin-bottom:2px" id="map-theme-label"></div><h1 id="map-title">Карта миров</h1></div>
-<div style="display:flex;align-items:center;gap:8px">
-<button class="music-btn" id="btn-music" title="Музыка" aria-label="Включить или выключить музыку">🎵</button>
-<div class="stars-badge"><span>⭐</span><span id="star-count">0</span></div>
-<button class="btn-parent" id="btn-change-theme" title="Сменить тему" aria-label="Сменить тему">🎨</button>
-<button class="btn-parent" id="btn-to-parent" aria-label="Кабинет родителя">Родителям</button>
-</div>
-</div>
-<div class="world-path" id="world-path"></div>
+  <div class="map-header">
+    <div class="map-header-left">
+      <div class="map-player-avatar" id="map-player-avatar" title="Сменить игрока">🕷️</div>
+      <div class="map-player-name" id="map-player-name">Игрок</div>
+    </div>
+    <div class="map-header-right">
+      <button class="music-btn" id="btn-music">🎵</button>
+      <div class="stars-badge"><span>⭐</span><span id="star-count">0</span></div>
+      <button class="btn-parent" id="btn-change-theme">🎨</button>
+    </div>
+  </div>
+  <div class="world-path" id="world-path"></div>
 </div>
 
-<!-- STUDY SCREEN -->
+<!-- ══ STUDY ══ -->
 <div id="screen-study" class="screen">
-<div class="study-header">
-<button class="btn-back" id="study-back" aria-label="Назад к карте">←</button>
-<div class="study-progress-bar"><div class="study-progress-fill" id="study-fill" style="width:10%"></div></div>
-<div class="study-counter" id="study-counter">1 / 10</div>
-<button class="music-btn" id="btn-music-study" aria-label="Включить или выключить музыку">🎵</button>
-</div>
-<div class="study-card">
-<div class="study-world-icon" id="study-icon">🕷️</div>
-<div class="study-equation" id="study-eq"><span id="seq-a">3</span><span class="op"> × </span><span id="seq-b">1</span><span class="op"> = </span><span class="result" id="seq-r">3</span></div>
-<div class="study-hint" id="study-hint">Запомни!</div>
-<div class="study-dots" id="study-dots"></div>
-</div>
-<div class="study-nav">
-<button class="btn-nav btn-prev" id="study-prev" aria-label="Предыдущий пример">← Назад</button>
-<button class="btn-nav btn-next" id="study-next" aria-label="Следующий пример">Далее →</button>
-</div>
+  <div class="study-header">
+    <button class="btn-back" id="study-back">←</button>
+    <div class="study-progress-bar"><div class="study-progress-fill" id="study-fill" style="width:10%"></div></div>
+    <div class="study-counter" id="study-counter">1 / 10</div>
+    <button class="music-btn" id="btn-music-study">🎵</button>
+  </div>
+  <div class="study-card">
+    <div class="study-world-icon" id="study-icon">🕷️</div>
+    <div class="study-equation">
+      <span id="seq-a">3</span><span class="op"> × </span><span id="seq-b">1</span><span class="op"> = </span><span class="result" id="seq-r">3</span>
+    </div>
+    <div class="study-hint" id="study-hint">Запомни!</div>
+    <div class="study-dots" id="study-dots"></div>
+  </div>
+  <div class="study-nav">
+    <button class="btn-nav btn-prev" id="study-prev">← Назад</button>
+    <button class="btn-nav btn-next" id="study-next">Далее →</button>
+  </div>
 </div>
 
-<!-- CHECK / TEST SCREEN -->
+<!-- ══ TEST ══ -->
 <div id="screen-test" class="screen">
-<div class="check-header">
-<div class="check-status">
-<div class="lives" id="check-lives">❤️❤️❤️</div>
-<div class="hints" id="check-hints">💡 <span id="hints-count">3</span></div>
-</div>
-<button class="music-btn" id="btn-music-test" aria-label="Музыка">🎵</button>
-</div>
-<div class="check-prog-bar"><div class="check-prog-fill" id="check-prog-fill" style="width:0%"></div></div>
-<div class="check-q-count" id="check-q-count">Вопрос 1 из 3</div>
-<div class="check-question">
-<div class="check-world-icon" id="check-icon">🕷️</div>
-<div class="check-eq"><span id="cq-a">3</span> × <span id="cq-b">7</span> = <span class="blank" id="cq-blank">?</span></div>
-</div>
-<div class="options-grid" id="options-grid"></div>
-<div class="check-actions">
-<button class="btn-hint" id="btn-use-hint">💡 Подсказка</button>
-<button class="btn-buy-life" id="btn-buy-life">❤️+ (⭐2)</button>
-</div>
-<div class="check-feedback" id="check-feedback" aria-live="polite"></div>
-<button class="btn-big btn-primary" id="btn-check-next" style="display:none" aria-label="Далее">Далее →</button>
+  <div class="check-header">
+    <div class="check-status">
+      <div class="lives" id="check-lives">❤️❤️❤️</div>
+      <div class="hints-disp">💡 <span id="hints-count">3</span></div>
+    </div>
+    <button class="music-btn" id="btn-music-test">🎵</button>
+  </div>
+  <div class="check-prog-bar"><div class="check-prog-fill" id="check-prog-fill" style="width:0%"></div></div>
+  <div class="check-q-count" id="check-q-count">Вопрос 1 из 3</div>
+  <div class="check-question">
+    <div class="check-world-icon" id="check-icon">🕷️</div>
+    <div class="check-eq"><span id="cq-a">3</span> × <span id="cq-b">7</span> = <span class="blank" id="cq-blank">?</span></div>
+  </div>
+  <div class="options-grid" id="options-grid"></div>
+  <div class="check-actions">
+    <button class="btn-hint" id="btn-use-hint">💡 Подсказка</button>
+  </div>
+  <div class="check-feedback" id="check-feedback"></div>
+  <button class="btn-big btn-primary" id="btn-check-next" style="display:none">Далее →</button>
 </div>
 
-<!-- RESULT SCREEN -->
+<!-- ══ RESULT ══ -->
 <div id="screen-result" class="screen">
-<div class="result-icon" id="result-icon">🏆</div>
-<div class="result-title" id="result-title">Отличная работа!</div>
-<div class="result-sub" id="result-sub">Таблица выучена!</div>
-<div class="result-score" id="result-score">10</div>
-<div class="result-score-label">из 10 правильно</div>
-<div class="result-mistakes" id="result-mistakes"><h3>ЗАПОМНИ ЭТИ ПРИМЕРЫ</h3><div id="mistake-chips"></div></div>
-<button class="btn-big btn-primary" id="result-btn-main" aria-label="Продолжить">Продолжить</button>
-<button class="btn-big btn-secondary" id="result-btn-retry" aria-label="Попробовать снова">Попробовать снова</button>
+  <div class="result-icon" id="result-icon">🏆</div>
+  <div class="result-title" id="result-title">Отличная работа!</div>
+  <div class="result-sub" id="result-sub">Таблица выучена!</div>
+  <div class="result-score" id="result-score">10</div>
+  <div class="result-score-label">из <span id="result-total">10</span> правильно</div>
+  <div class="result-mistakes" id="result-mistakes"><h3>ЗАПОМНИ ЭТИ ПРИМЕРЫ</h3><div id="mistake-chips"></div></div>
+  <button class="btn-big btn-primary" id="result-btn-main">Продолжить</button>
+  <button class="btn-big btn-secondary" id="result-btn-retry" style="margin-top:8px">Попробовать снова</button>
 </div>
 
-<!-- UNLOCK SCREEN -->
+<!-- ══ UNLOCK ══ -->
 <div id="screen-unlock" class="screen">
-<div class="unlock-sparkles">✨</div>
-<div class="unlock-icon" id="unlock-icon">🌳</div>
-<div class="unlock-title">Новый мир открыт!</div>
-<div class="unlock-name" id="unlock-name">Лес</div>
-<button class="btn-big btn-primary" id="btn-unlock-ok" style="max-width:320px" aria-label="На карту">На карту →</button>
+  <div class="unlock-sparkles">✨</div>
+  <div class="unlock-icon" id="unlock-icon">🌳</div>
+  <div class="unlock-title">Новый мир открыт!</div>
+  <div class="unlock-name" id="unlock-name">Лес</div>
+  <button class="btn-big btn-primary" id="btn-unlock-ok" style="max-width:320px">На карту →</button>
 </div>
 
-<!-- PARENT SCREEN -->
-<div id="screen-parent" class="screen">
-<div class="parent-header"><button class="btn-back" id="parent-back" aria-label="Назад">←</button><h2>Кабинет родителя</h2></div>
-<div class="stat-grid">
-<div class="stat-card"><div class="stat-label">ПРИМЕРОВ РЕШЕНО</div><div class="stat-value" id="stat-total">0</div><div class="stat-icon">📊</div></div>
-<div class="stat-card"><div class="stat-label">ЗВЁЗДЫ</div><div class="stat-value" id="stat-stars">0</div><div class="stat-icon">⭐</div></div>
-<div class="stat-card"><div class="stat-label">ВЫУЧЕНО ТАБЛИЦ</div><div class="stat-value" id="stat-tables">0</div><div class="stat-icon">📚</div></div>
-<div class="stat-card"><div class="stat-label">ТОЧНОСТЬ</div><div class="stat-value" id="stat-accuracy">—</div><div class="stat-icon">🎯</div></div>
-</div>
-<div class="hard-list"><h3>ТОП СЛОЖНЫХ ПРИМЕРОВ</h3><div id="hard-items"></div></div>
-<button class="btn-give-hints" id="btn-give-hints" aria-label="Дать подсказки">💡 Дать подсказки (+3)</button>
-<button class="btn-reset" id="btn-reset-mistakes" aria-label="Сбросить статистику ошибок">Сбросить статистику ошибок</button>
-<button class="btn-reset" id="btn-full-reset" style="border-color:rgba(255,255,255,0.1);color:var(--text3);margin-top:-8px" aria-label="Полный сброс прогресса">Полный сброс (начать заново)</button>
+<!-- ══ ADMIN ══ -->
+<div id="screen-admin" class="screen">
+  <div class="admin-header">
+    <button class="btn-back" id="admin-back">←</button>
+    <h2>Кабинет администратора</h2>
+  </div>
+  <div class="admin-tabs">
+    <button class="admin-tab active" data-tab="overview">📊 Обзор</button>
+    <button class="admin-tab" data-tab="players">👥 Игроки</button>
+    <button class="admin-tab" data-tab="hard">⚡ Ошибки</button>
+  </div>
+
+  <!-- Обзор -->
+  <div class="admin-panel active" id="panel-overview">
+    <div class="stats-total-grid" id="stats-total-grid"></div>
+    <button class="btn-give-hints-all" id="btn-give-hints-all">💡 Дать всем игрокам +3 подсказки</button>
+    <button class="btn-reset" id="btn-reset-all-mistakes">Сбросить все статистики ошибок</button>
+    <button class="btn-reset" id="btn-full-reset-all" style="border-color:rgba(255,255,255,0.1);color:var(--text3)">⚠️ Полный сброс (все игроки)</button>
+  </div>
+
+  <!-- Игроки -->
+  <div class="admin-panel" id="panel-players">
+    <div class="admin-players-list" id="admin-players-list"></div>
+  </div>
+
+  <!-- Ошибки -->
+  <div class="admin-panel" id="panel-hard">
+    <div class="hard-list"><h3>ТОП СЛОЖНЫХ ПРИМЕРОВ (все игроки)</h3><div id="hard-items-all"></div></div>
+  </div>
 </div>
 
-<!-- PIN OVERLAY -->
+<!-- ══ PIN OVERLAY ══ -->
 <div id="pin-overlay">
-<div class="pin-box">
-<div class="pin-icon">🔐</div>
-<div class="pin-title" id="pin-title">Введите PIN</div>
-<div class="pin-sub" id="pin-sub">Для входа в кабинет родителя</div>
-<div class="pin-dots" id="pin-dots"><div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div><div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div></div>
-<div class="pin-error" id="pin-error"></div>
-<div class="pin-keypad" id="pin-keypad">
-<button class="pin-key" data-k="1" aria-label="1">1</button><button class="pin-key" data-k="2" aria-label="2">2</button><button class="pin-key" data-k="3" aria-label="3">3</button>
-<button class="pin-key" data-k="4" aria-label="4">4</button><button class="pin-key" data-k="5" aria-label="5">5</button><button class="pin-key" data-k="6" aria-label="6">6</button>
-<button class="pin-key" data-k="7" aria-label="7">7</button><button class="pin-key" data-k="8" aria-label="8">8</button><button class="pin-key" data-k="9" aria-label="9">9</button>
-<button class="pin-key empty"></button><button class="pin-key" data-k="0" aria-label="0">0</button><button class="pin-key del" data-k="del" aria-label="Удалить">⌫</button>
-</div>
-<button class="btn-pin-cancel" id="pin-cancel" aria-label="Отмена">Отмена</button>
-</div>
-</div>
-
-<!-- LIVES OUT MODAL -->
-<div id="lives-modal" class="modal-overlay">
-<div class="modal-box">
-<div class="modal-title">Жизни закончились!</div>
-<div class="modal-text" id="lives-modal-text">Правильный ответ: 6 × 7 = 42</div>
-<button class="btn-big btn-primary" id="btn-retry-check" aria-label="Начать заново">Начать заново</button>
-</div>
+  <div class="pin-box">
+    <div class="pin-icon">🔐</div>
+    <div class="pin-title" id="pin-title">Введите PIN</div>
+    <div class="pin-sub" id="pin-sub">Для входа в кабинет администратора</div>
+    <div class="pin-dots" id="pin-dots">
+      <div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div>
+      <div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div>
+    </div>
+    <div class="pin-error" id="pin-error"></div>
+    <div class="pin-keypad" id="pin-keypad">
+      <button class="pin-key" data-k="1">1</button><button class="pin-key" data-k="2">2</button><button class="pin-key" data-k="3">3</button>
+      <button class="pin-key" data-k="4">4</button><button class="pin-key" data-k="5">5</button><button class="pin-key" data-k="6">6</button>
+      <button class="pin-key" data-k="7">7</button><button class="pin-key" data-k="8">8</button><button class="pin-key" data-k="9">9</button>
+      <button class="pin-key empty"></button><button class="pin-key" data-k="0">0</button><button class="pin-key del" data-k="del">⌫</button>
+    </div>
+    <button class="btn-pin-cancel" id="pin-cancel">Отмена</button>
+  </div>
 </div>
 
-<!-- CONFIRM MODAL -->
+<!-- ══ CONFIRM MODAL ══ -->
 <div id="confirm-modal" class="modal-overlay">
-<div class="modal-box">
-<div class="modal-title" id="modal-title">Подтверждение</div>
-<div class="modal-text" id="modal-text">Вы уверены?</div>
-<div class="modal-btns">
-<button class="modal-btn cancel" id="modal-cancel" aria-label="Отмена">Отмена</button>
-<button class="modal-btn confirm" id="modal-confirm" aria-label="Подтвердить">Да</button>
+  <div class="modal-box">
+    <div class="modal-title" id="modal-title">Подтверждение</div>
+    <div class="modal-text" id="modal-text">Вы уверены?</div>
+    <div class="modal-btns">
+      <button class="modal-btn cancel" id="modal-cancel">Отмена</button>
+      <button class="modal-btn confirm" id="modal-confirm">Да</button>
+    </div>
+  </div>
 </div>
-</div>
-</div>
-</div>
+
+</div><!-- #app -->
 
 <script>
 (function() {
 'use strict';
-// ═══════════════════════════════════════════════
-//  THEMES CONFIG
-// ═══════════════════════════════════════════════
-const THEMES = {
-spiderman: { name:'Человек-паук', color:'#E53935', primaryDark:'#B71C1C', accent:'#FFD600', bg:'#0A0A1A', surface:'#12122A', surface2:'#1A1A35', emoji:'🕷️',
-worlds:[{n:2,name:'Квартал',icon:'🏘️'},{n:3,name:'Крыши',icon:'🏙️'},{n:4,name:'Мост',icon:'🌉'},{n:5,name:'Сити',icon:'🌆'},{n:6,name:'Небоскрёб',icon:'🏢'},{n:7,name:'Метро',icon:'🚇'},{n:8,name:'Музей',icon:'🏛️'},{n:9,name:'Замок злодея',icon:'🏰'}],
-victory:'🦸 ПАУТИНА СПЛЕТЕНА!', fail:'😵 Паутина порвалась!', goodWords:['Прыжок!','Паутина!','Точно!','Герой!','Бум!'] },
-ducks: { name:'Утки', color:'#1E88E5', primaryDark:'#0D47A1', accent:'#FFEB3B', bg:'#062024', surface:'#0D343A', surface2:'#16484F', emoji:'🦆',
-worlds:[{n:2,name:'Пруд',icon:'🌊'},{n:3,name:'Камыши',icon:'🌾'},{n:4,name:'Луг',icon:'🌻'},{n:5,name:'Ферма',icon:'🚜'},{n:6,name:'Озеро',icon:'🏞️'},{n:7,name:'Болото',icon:'🐸'},{n:8,name:'Река',icon:'🌊'},{n:9,name:'Море',icon:'🌅'}],
-victory:'🦆 КРЯ-КРЯ ПОБЕДА!', fail:'🦆 Утка расстроилась!', goodWords:['Кря!','Плюх!','Крылья!','Молодец!','Кряк!'] },
-planes: { name:'Самолёты', color:'#1565C0', primaryDark:'#0D47A1', accent:'#80D8FF', bg:'#040F1F', surface:'#0C2238', surface2:'#1A3A52', emoji:'✈️',
-worlds:[{n:2,name:'Взлётная',icon:'🛫'},{n:3,name:'Облака',icon:'☁️'},{n:4,name:'Высота 1',icon:'🌤️'},{n:5,name:'Высота 2',icon:'⛅'},{n:6,name:'Стратосфера',icon:'🌌'},{n:7,name:'Гроза',icon:'⛈️'},{n:8,name:'Над миром',icon:'🌍'},{n:9,name:'Космос',icon:'🚀'}],
-victory:'🛩️ ПОСАДКА МАСТЕРА!', fail:'✈️ Турбулентность!', goodWords:['Взлёт!','Скорость!','Точно!','Пилот!','Выше!'] },
-cars: { name:'Тачки', color:'#E53935', primaryDark:'#B71C1C', accent:'#FFEB3B', bg:'#15151A', surface:'#212229', surface2:'#2D2F39', emoji:'🏎️',
-worlds:[{n:2,name:'Стоянка',icon:'🅿️'},{n:3,name:'Трасса',icon:'🛣️'},{n:4,name:'Трек',icon:'🏁'},{n:5,name:'Пит-стоп',icon:'⛽'},{n:6,name:'Дрифт',icon:'💨'},{n:7,name:'Горы',icon:'⛰️'},{n:8,name:'Ночная гонка',icon:'🌃'},{n:9,name:'Финишная',icon:'🏆'}],
-victory:'🏁 ФИНИШ ЧЕМПИОНА!', fail:'💨 Занесло!', goodWords:['Газ!','Скорость!','Дрифт!','Финиш!','Гонщик!'] },
-dragons: { name:'Драконы', color:'#7C4DFF', primaryDark:'#512DA8', accent:'#FFC107', bg:'#0F0A1C', surface:'#1C1430', surface2:'#2A1F44', emoji:'🐉',
-worlds:[{n:2,name:'Деревня',icon:'🏘️'},{n:3,name:'Лес',icon:'🌲'},{n:4,name:'Пещера',icon:'🕳️'},{n:5,name:'Подземелье',icon:'🗝️'},{n:6,name:'Башня',icon:'🗼'},{n:7,name:'Сокровищница',icon:'💎'},{n:8,name:'Логово дракона',icon:'🐉'},{n:9,name:'Трон',icon:'👑'}],
-victory:'🐉 ДРАКОН ПОБЕЖДЁН!', fail:'🐉 Дракон сильнее... пока!', goodWords:['Огонь!','Магия!','Точно!','Герой!','Клад!'] },
-space: { name:'Космос', color:'#3949AB', primaryDark:'#1A237E', accent:'#00E5FF', bg:'#05060F', surface:'#10131F', surface2:'#1A1F33', emoji:'🚀',
-worlds:[{n:2,name:'Старт',icon:'🚀'},{n:3,name:'Орбита',icon:'🛰️'},{n:4,name:'Луна',icon:'🌕'},{n:5,name:'Астероиды',icon:'☄️'},{n:6,name:'Марс',icon:'🌋'},{n:7,name:'Сатурн',icon:'🪐'},{n:8,name:'Галактика',icon:'🌌'},{n:9,name:'Чёрная дыра',icon:'🕳️'}],
-victory:'🚀 МИССИЯ ВЫПОЛНЕНА!', fail:'☄️ Сбились с курса!', goodWords:['Старт!','Ракета!','Точно!','Космонавт!','Орбита!'] }
-};
 
 // ═══════════════════════════════════════════════
-//  STATE & STORAGE [FIX] Added missing fields
+//  THEMES
 // ═══════════════════════════════════════════════
-const DEFAULT_STATE = { version:'2.1', theme:null, unlocked:2, stars:0, completed:[], mistakes:{}, totalAnswered:0, totalCorrect:0, pin:'1234', pinSet:false, hints:3, finalTestDone:false };
-function loadState() {
-  try { const raw = localStorage.getItem('mult_academy_v3'); return raw ? { ...DEFAULT_STATE, ...JSON.parse(raw) } : { ...DEFAULT_STATE }; }
-  catch(e) { console.warn('Load state failed', e); return { ...DEFAULT_STATE }; }
+const THEMES = {
+  spiderman: { name:'Человек-паук', color:'#E53935', primaryDark:'#B71C1C', accent:'#FFD600', bg:'#0A0A1A', surface:'#12122A', surface2:'#1A1A35', emoji:'🕷️',
+    worlds:[{n:2,name:'Квартал',icon:'🏘️'},{n:3,name:'Крыши',icon:'🏙️'},{n:4,name:'Мост',icon:'🌉'},{n:5,name:'Сити',icon:'🌆'},{n:6,name:'Небоскрёб',icon:'🏢'},{n:7,name:'Метро',icon:'🚇'},{n:8,name:'Музей',icon:'🏛️'},{n:9,name:'Замок злодея',icon:'🏰'}],
+    victory:'🦸 ПАУТИНА СПЛЕТЕНА!', fail:'😵 Паутина порвалась!', goodWords:['Прыжок!','Паутина!','Точно!','Герой!','Бум!'] },
+  ducks: { name:'Утки', color:'#1E88E5', primaryDark:'#0D47A1', accent:'#FFEB3B', bg:'#062024', surface:'#0D343A', surface2:'#16484F', emoji:'🦆',
+    worlds:[{n:2,name:'Пруд',icon:'🌊'},{n:3,name:'Камыши',icon:'🌾'},{n:4,name:'Луг',icon:'🌻'},{n:5,name:'Ферма',icon:'🚜'},{n:6,name:'Озеро',icon:'🏞️'},{n:7,name:'Болото',icon:'🐸'},{n:8,name:'Река',icon:'🌊'},{n:9,name:'Море',icon:'🌅'}],
+    victory:'🦆 КРЯ-КРЯ ПОБЕДА!', fail:'🦆 Утка расстроилась!', goodWords:['Кря!','Плюх!','Крылья!','Молодец!','Кряк!'] },
+  planes: { name:'Самолёты', color:'#1565C0', primaryDark:'#0D47A1', accent:'#80D8FF', bg:'#040F1F', surface:'#0C2238', surface2:'#1A3A52', emoji:'✈️',
+    worlds:[{n:2,name:'Взлётная',icon:'🛫'},{n:3,name:'Облака',icon:'☁️'},{n:4,name:'Высота 1',icon:'🌤️'},{n:5,name:'Высота 2',icon:'⛅'},{n:6,name:'Стратосфера',icon:'🌌'},{n:7,name:'Гроза',icon:'⛈️'},{n:8,name:'Над миром',icon:'🌍'},{n:9,name:'Космос',icon:'🚀'}],
+    victory:'🛩️ ПОСАДКА МАСТЕРА!', fail:'✈️ Турбулентность!', goodWords:['Взлёт!','Скорость!','Точно!','Пилот!','Выше!'] },
+  cars: { name:'Тачки', color:'#E53935', primaryDark:'#B71C1C', accent:'#FFEB3B', bg:'#15151A', surface:'#212229', surface2:'#2D2F39', emoji:'🏎️',
+    worlds:[{n:2,name:'Стоянка',icon:'🅿️'},{n:3,name:'Трасса',icon:'🛣️'},{n:4,name:'Трек',icon:'🏁'},{n:5,name:'Пит-стоп',icon:'⛽'},{n:6,name:'Дрифт',icon:'💨'},{n:7,name:'Горы',icon:'⛰️'},{n:8,name:'Ночная гонка',icon:'🌃'},{n:9,name:'Финишная',icon:'🏆'}],
+    victory:'🏁 ФИНИШ ЧЕМПИОНА!', fail:'💨 Занесло!', goodWords:['Газ!','Скорость!','Дрифт!','Финиш!','Гонщик!'] },
+  dragons: { name:'Драконы', color:'#7C4DFF', primaryDark:'#512DA8', accent:'#FFC107', bg:'#0F0A1C', surface:'#1C1430', surface2:'#2A1F44', emoji:'🐉',
+    worlds:[{n:2,name:'Деревня',icon:'🏘️'},{n:3,name:'Лес',icon:'🌲'},{n:4,name:'Пещера',icon:'🕳️'},{n:5,name:'Подземелье',icon:'🗝️'},{n:6,name:'Башня',icon:'🗼'},{n:7,name:'Сокровищница',icon:'💎'},{n:8,name:'Логово дракона',icon:'🐉'},{n:9,name:'Трон',icon:'👑'}],
+    victory:'🐉 ДРАКОН ПОБЕЖДЁН!', fail:'🐉 Дракон сильнее... пока!', goodWords:['Огонь!','Магия!','Точно!','Герой!','Клад!'] },
+  space: { name:'Космос', color:'#3949AB', primaryDark:'#1A237E', accent:'#00E5FF', bg:'#05060F', surface:'#10131F', surface2:'#1A1F33', emoji:'🚀',
+    worlds:[{n:2,name:'Старт',icon:'🚀'},{n:3,name:'Орбита',icon:'🛰️'},{n:4,name:'Луна',icon:'🌕'},{n:5,name:'Астероиды',icon:'☄️'},{n:6,name:'Марс',icon:'🌋'},{n:7,name:'Сатурн',icon:'🪐'},{n:8,name:'Галактика',icon:'🌌'},{n:9,name:'Чёрная дыра',icon:'🕳️'}],
+    victory:'🚀 МИССИЯ ВЫПОЛНЕНА!', fail:'☄️ Сбились с курса!', goodWords:['Старт!','Ракета!','Точно!','Космонавт!','Орбита!'] }
+};
+
+const AVATARS = ['😊','🐯','🦊','🐸','🦁','🐼','🐨','🐺','🦋','🦄','🚀','⚽','🎮','🎸','🌟'];
+
+// ═══════════════════════════════════════════════
+//  GLOBAL STORAGE (admin settings)
+// ═══════════════════════════════════════════════
+function loadGlobal() {
+  try { const r = localStorage.getItem('mla_global'); return r ? JSON.parse(r) : { pin:'1234', pinSet:false }; }
+  catch(e) { return { pin:'1234', pinSet:false }; }
 }
-function saveState() {
-  try { localStorage.setItem('mult_academy_v3', JSON.stringify(state)); }
-  catch(e) { console.warn('Storage quota exceeded or blocked', e); }
+function saveGlobal() { localStorage.setItem('mla_global', JSON.stringify(global)); }
+let global = loadGlobal();
+
+// ═══════════════════════════════════════════════
+//  PLAYERS STORAGE
+// ═══════════════════════════════════════════════
+const MAX_PLAYERS = 5;
+const PLAYER_DEFAULT = () => ({ theme: null, unlocked: 2, stars: 0, completed: [], mistakes: {}, totalAnswered: 0, totalCorrect: 0, hints: 3 });
+
+function loadPlayers() {
+  try { const r = localStorage.getItem('mla_players'); return r ? JSON.parse(r) : []; }
+  catch(e) { return []; }
 }
-let state = loadState();
-let currentTable = null, studyIndex = 0, selectedTheme = state.theme || null;
+function savePlayers() { localStorage.setItem('mla_players', JSON.stringify(players)); }
+let players = loadPlayers();
+
+function getPlayer(id) { return players.find(p => p.id === id); }
+function savePlayer() { savePlayers(); }
+
+// ═══════════════════════════════════════════════
+//  CURRENT SESSION
+// ═══════════════════════════════════════════════
+let currentPlayerId = null;
+let currentPlayer = null; // shortcut
+let currentTable = null;
+let studyIndex = 0;
 let checkPhase = null, checkQuestions = [], checkIndex = 0, currentLives = 3, isCheckWaiting = false, currentCorrect = 0;
+let selectedTheme = null;
+let editingPlayerId = null; // null = new
 
 // ═══════════════════════════════════════════════
 //  AUDIO ENGINE
@@ -432,406 +567,505 @@ function playTone(freq, type, duration, volume, delay = 0) {
 }
 function sfxCorrect() { playTone(523,'sine',0.12,0.3); playTone(659,'sine',0.12,0.3,0.12); playTone(784,'sine',0.2,0.35,0.24); }
 function sfxWrong() { playTone(220,'sawtooth',0.08,0.25); playTone(196,'sawtooth',0.08,0.25,0.09); playTone(165,'sawtooth',0.12,0.2,0.18); }
-function sfxVictory() { const n=[523,659,784,1047,784,1047,1319], d=[0.1,0.1,0.1,0.25,0.1,0.1,0.4]; let t=0; n.forEach((v,i)=>{playTone(v,'sine',d[i]+0.05,0.35,t); t+=d[i];}); }
+function sfxVictory() { const n=[523,659,784,1047,784,1047,1319],d=[0.1,0.1,0.1,0.25,0.1,0.1,0.4]; let t=0; n.forEach((v,i)=>{playTone(v,'sine',d[i]+0.05,0.35,t);t+=d[i];}); }
 function sfxFail() { [330,311,294,277].forEach((n,i)=>playTone(n,'sawtooth',0.15,0.2,i*0.12)); }
 function sfxClick() { playTone(800,'sine',0.05,0.12); }
-function sfxUnlock() { const n=[523,659,784,1047,1319,1047,784,1047]; let t=0; n.forEach((v,i)=>{playTone(v,'sine',0.15,0.35,t); t+=0.08;}); }
+function sfxUnlock() { const n=[523,659,784,1047,1319,1047,784,1047]; let t=0; n.forEach((v,i)=>{playTone(v,'sine',0.15,0.35,t);t+=0.08;}); }
 
-const BPM = 118, BEAT = 60 / BPM, BAR = BEAT * 4;
-const MELODY = [[0,261],[1,329],[2,392],[3,329],[4,349],[5,440],[6,523],[7,440],[8,392],[9,493],[10,587],[11,493],[12,261],[13,329],[14,392],[15,523],[16,440],[17,523],[18,659],[19,523],[20,349],[21,440],[22,523],[23,440],[24,392],[25,587],[26,392],[27,493],[28,523],[29,392],[30,329],[31,261],[32,329],[33,261],[34,392],[35,329],[36,440],[37,349],[38,523],[38.5,587],[39,523],[40,493],[41,440],[42,392],[43,349],[44,523],[45,659],[46,784],[47,659],[48,587],[49,523],[50,440],[51,392],[52,349],[53,440],[54,523],[55,440],[56,392],[57,493],[58,392],[59,329],[60,261],[61,329],[62,261],[63,0]];
-const CHORDS = [[261,329,392],[349,440,523],[392,493,587],[261,329,392],[440,523,659],[349,440,523],[392,493,587],[261,329,392],[261,329,392],[349,440,523],[392,493,587],[261,329,392],[440,523,659],[349,440,523],[392,493,587],[261,329,392]];
-const BASS = [130,174,196,130,220,174,196,130,130,174,196,130,220,174,196,130];
-
-function scheduleNote(ctx, masterGain, freq, type, startTime, dur, vol, attack=0.01, release=0.05) {
-  if (freq <= 0) return;
-  const osc = ctx.createOscillator(), g = ctx.createGain();
-  osc.type = type; osc.frequency.value = freq;
-  g.gain.setValueAtTime(0, startTime); g.gain.linearRampToValueAtTime(vol, startTime + attack);
-  g.gain.setValueAtTime(vol, startTime + dur - release); g.gain.linearRampToValueAtTime(0, startTime + dur);
-  osc.connect(g); g.connect(masterGain); osc.start(startTime); osc.stop(startTime + dur + 0.01);
-}
+const BPM=118, BEAT=60/BPM, BAR=BEAT*4;
+const MELODY=[[0,261],[1,329],[2,392],[3,329],[4,349],[5,440],[6,523],[7,440],[8,392],[9,493],[10,587],[11,493],[12,261],[13,329],[14,392],[15,523],[16,440],[17,523],[18,659],[19,523],[20,349],[21,440],[22,523],[23,440],[24,392],[25,587],[26,392],[27,493],[28,523],[29,392],[30,329],[31,261],[32,329],[33,261],[34,392],[35,329],[36,440],[37,349],[38,523],[38.5,587],[39,523],[40,493],[41,440],[42,392],[43,349],[44,523],[45,659],[46,784],[47,659],[48,587],[49,523],[50,440],[51,392],[52,349],[53,440],[54,523],[55,440],[56,392],[57,493],[58,392],[59,329],[60,261],[61,329],[62,261],[63,0]];
+const CHORDS=[[261,329,392],[349,440,523],[392,493,587],[261,329,392],[440,523,659],[349,440,523],[392,493,587],[261,329,392],[261,329,392],[349,440,523],[392,493,587],[261,329,392],[440,523,659],[349,440,523],[392,493,587],[261,329,392]];
+const BASS=[130,174,196,130,220,174,196,130,130,174,196,130,220,174,196,130];
+function scheduleNote(ctx,mg,freq,type,st,dur,vol,attack=0.01,release=0.05){if(freq<=0)return;const osc=ctx.createOscillator(),g=ctx.createGain();osc.type=type;osc.frequency.value=freq;g.gain.setValueAtTime(0,st);g.gain.linearRampToValueAtTime(vol,st+attack);g.gain.setValueAtTime(vol,st+dur-release);g.gain.linearRampToValueAtTime(0,st+dur);osc.connect(g);g.connect(mg);osc.start(st);osc.stop(st+dur+0.01);}
 function startMusic() {
-  if (musicPlaying) return;
-  const ctx = getAudio(); musicPlaying = true; updateMusicBtn();
-  musicGain = ctx.createGain();
-  musicGain.gain.setValueAtTime(0, ctx.currentTime);
-  musicGain.gain.linearRampToValueAtTime(0.85, ctx.currentTime + 1.5);
-  musicGain.connect(ctx.destination);
-  const LOOP_BARS = 16, LOOP_DUR = LOOP_BARS * BAR;
-  function scheduleLoop(loopStart) {
-    MELODY.forEach(([beat, freq]) => { const t = loopStart + beat * BEAT; scheduleNote(ctx, musicGain, freq, 'sine', t, BEAT * 0.82, 0.11, 0.01, 0.08); });
-    for (let bar = 0; bar < LOOP_BARS; bar++) {
-      const chord = CHORDS[bar % CHORDS.length];
-      for (let beat = 0; beat < 4; beat++) {
-        const t = loopStart + (bar * 4 + beat) * BEAT;
-        chord.forEach(freq => scheduleNote(ctx, musicGain, freq, 'triangle', t, BEAT * 0.6, 0.022, 0.03, 0.1));
-      }
-    }
-    for (let bar = 0; bar < LOOP_BARS; bar++) {
-      const t = loopStart + bar * BAR, freq = BASS[bar % BASS.length];
-      scheduleNote(ctx, musicGain, freq, 'sawtooth', t, BAR * 0.75, 0.035, 0.02, 0.15);
-      scheduleNote(ctx, musicGain, freq, 'sawtooth', t + BEAT * 2, BEAT * 0.4, 0.018, 0.01, 0.08);
-    }
-    for (let i = 0; i < LOOP_BARS * 4; i++) {
-      const t = loopStart + i * BEAT;
-      const noise = ctx.createOscillator(), ng = ctx.createGain(), filter = ctx.createBiquadFilter();
-      noise.type = 'triangle'; noise.frequency.value = 2400 + Math.random() * 400;
-      filter.type = 'highpass'; filter.frequency.value = 3000;
-      ng.gain.setValueAtTime(0, t); ng.gain.linearRampToValueAtTime(i % 4 === 0 ? 0.018 : 0.009, t + 0.005);
-      ng.gain.exponentialRampToValueAtTime(0.0001, t + 0.04);
-      noise.connect(filter); filter.connect(ng); ng.connect(musicGain);
-      noise.start(t); noise.stop(t + 0.05);
-      if (i % 2 === 0) {
-        const kick = ctx.createOscillator(), kg = ctx.createGain();
-        kick.type = 'sine'; kick.frequency.setValueAtTime(120, t); kick.frequency.exponentialRampToValueAtTime(40, t + 0.12);
-        kg.gain.setValueAtTime(0.06, t); kg.gain.exponentialRampToValueAtTime(0.0001, t + 0.15);
-        kick.connect(kg); kg.connect(musicGain); kick.start(t); kick.stop(t + 0.18);
-      }
-    }
+  if (musicPlaying) return; const ctx=getAudio(); musicPlaying=true; updateMusicBtn();
+  musicGain=ctx.createGain(); musicGain.gain.setValueAtTime(0,ctx.currentTime); musicGain.gain.linearRampToValueAtTime(0.85,ctx.currentTime+1.5); musicGain.connect(ctx.destination);
+  const LOOP_BARS=16, LOOP_DUR=LOOP_BARS*BAR;
+  function scheduleLoop(ls){
+    MELODY.forEach(([beat,freq])=>scheduleNote(ctx,musicGain,freq,'sine',ls+beat*BEAT,BEAT*0.82,0.11,0.01,0.08));
+    for(let bar=0;bar<LOOP_BARS;bar++){const chord=CHORDS[bar%CHORDS.length];for(let beat=0;beat<4;beat++){const t=ls+(bar*4+beat)*BEAT;chord.forEach(freq=>scheduleNote(ctx,musicGain,freq,'triangle',t,BEAT*0.6,0.022,0.03,0.1));}}
+    for(let bar=0;bar<LOOP_BARS;bar++){const t=ls+bar*BAR,freq=BASS[bar%BASS.length];scheduleNote(ctx,musicGain,freq,'sawtooth',t,BAR*0.75,0.035,0.02,0.15);scheduleNote(ctx,musicGain,freq,'sawtooth',t+BEAT*2,BEAT*0.4,0.018,0.01,0.08);}
+    for(let i=0;i<LOOP_BARS*4;i++){const t=ls+i*BEAT;const noise=ctx.createOscillator(),ng=ctx.createGain(),filter=ctx.createBiquadFilter();noise.type='triangle';noise.frequency.value=2400+Math.random()*400;filter.type='highpass';filter.frequency.value=3000;ng.gain.setValueAtTime(0,t);ng.gain.linearRampToValueAtTime(i%4===0?0.018:0.009,t+0.005);ng.gain.exponentialRampToValueAtTime(0.0001,t+0.04);noise.connect(filter);filter.connect(ng);ng.connect(musicGain);noise.start(t);noise.stop(t+0.05);if(i%2===0){const kick=ctx.createOscillator(),kg=ctx.createGain();kick.type='sine';kick.frequency.setValueAtTime(120,t);kick.frequency.exponentialRampToValueAtTime(40,t+0.12);kg.gain.setValueAtTime(0.06,t);kg.gain.exponentialRampToValueAtTime(0.0001,t+0.15);kick.connect(kg);kg.connect(musicGain);kick.start(t);kick.stop(t+0.18);}}
   }
-  nextBeatTime = ctx.currentTime + 0.1;
-  scheduleLoop(nextBeatTime);
-  const loopMs = LOOP_DUR * 1000;
-  const reschedule = () => { if (!musicPlaying) return; nextBeatTime += LOOP_DUR; scheduleLoop(nextBeatTime); musicScheduler = setTimeout(reschedule, loopMs - 400); };
-  musicScheduler = setTimeout(reschedule, loopMs - 400);
+  nextBeatTime=ctx.currentTime+0.1; scheduleLoop(nextBeatTime);
+  const loopMs=LOOP_DUR*1000;
+  const reschedule=()=>{if(!musicPlaying)return;nextBeatTime+=LOOP_DUR;scheduleLoop(nextBeatTime);musicScheduler=setTimeout(reschedule,loopMs-400);};
+  musicScheduler=setTimeout(reschedule,loopMs-400);
 }
 function stopMusic() {
-  musicPlaying = false; if (musicScheduler) { clearTimeout(musicScheduler); musicScheduler = null; }
-  if (musicGain) { try { const ctx = getAudio(); musicGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.4); setTimeout(()=>{try{musicGain.disconnect();}catch(e){} musicGain=null;}, 500); } catch(e){ musicGain=null; } }
+  musicPlaying=false; if(musicScheduler){clearTimeout(musicScheduler);musicScheduler=null;}
+  if(musicGain){try{const ctx=getAudio();musicGain.gain.linearRampToValueAtTime(0,ctx.currentTime+0.4);setTimeout(()=>{try{musicGain.disconnect();}catch(e){}musicGain=null;},500);}catch(e){musicGain=null;}}
   updateMusicBtn();
 }
-function toggleMusic() { musicPlaying ? stopMusic() : startMusic(); }
-function updateMusicBtn() { document.querySelectorAll('#btn-music,#btn-music-study,#btn-music-test').forEach(b => b.textContent = musicPlaying ? '🔇' : '🎵'); }
-document.addEventListener('visibilitychange', () => {
-  if (!musicGain) return;
-  const ctx = getAudio();
-  if (document.hidden) { musicGain.gain.setTargetAtTime(0, ctx.currentTime, 0.1); }
-  else if (musicPlaying) { musicGain.gain.setTargetAtTime(0.85, ctx.currentTime, 0.1); }
-});
+function toggleMusic(){musicPlaying?stopMusic():startMusic();}
+function updateMusicBtn(){document.querySelectorAll('.music-btn').forEach(b=>b.textContent=musicPlaying?'🔇':'🎵');}
 
 // ═══════════════════════════════════════════════
 //  CONFETTI
 // ═══════════════════════════════════════════════
-const canvas = document.getElementById('confetti-canvas'), ctx2d = canvas.getContext('2d');
-let particles = [], animFrame = null;
-function launchConfetti() {
-  canvas.width = window.innerWidth; canvas.height = window.innerHeight; particles = [];
-  for (let i = 0; i < 120; i++) particles.push({ x: Math.random()*canvas.width, y: -10-Math.random()*100, vx: (Math.random()-0.5)*6, vy: 2+Math.random()*5, color: ['#FFD600','#E53935','#00C853','#00E5FF','#FF6D00','#E040FB'][Math.floor(Math.random()*6)], size: 6+Math.random()*8, rot: Math.random()*360, rotV: (Math.random()-0.5)*8 });
-  if (animFrame) cancelAnimationFrame(animFrame); animateConfetti();
-  setTimeout(() => { particles = []; ctx2d.clearRect(0,0,canvas.width,canvas.height); }, 3500);
-}
-function animateConfetti() {
-  ctx2d.clearRect(0,0,canvas.width,canvas.height);
-  particles.forEach(p => { p.x+=p.vx; p.y+=p.vy; p.vy+=0.08; p.rot+=p.rotV; ctx2d.save(); ctx2d.translate(p.x,p.y); ctx2d.rotate(p.rot*Math.PI/180); ctx2d.fillStyle=p.color; ctx2d.fillRect(-p.size/2,-p.size/2,p.size,p.size*0.5); ctx2d.restore(); });
-  particles = particles.filter(p => p.y < canvas.height + 20);
-  if (particles.length > 0) animFrame = requestAnimationFrame(animateConfetti);
-}
+const canvas=document.getElementById('confetti-canvas'),ctx2d=canvas.getContext('2d');
+let particles=[],animFrame=null;
+function launchConfetti(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;particles=[];for(let i=0;i<120;i++)particles.push({x:Math.random()*canvas.width,y:-10-Math.random()*100,vx:(Math.random()-0.5)*6,vy:2+Math.random()*5,color:['#FFD600','#E53935','#00C853','#00E5FF','#FF6D00','#E040FB'][Math.floor(Math.random()*6)],size:6+Math.random()*8,rot:Math.random()*360,rotV:(Math.random()-0.5)*8});if(animFrame)cancelAnimationFrame(animFrame);animateConfetti();setTimeout(()=>{particles=[];ctx2d.clearRect(0,0,canvas.width,canvas.height);},3500);}
+function animateConfetti(){ctx2d.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=0.08;p.rot+=p.rotV;ctx2d.save();ctx2d.translate(p.x,p.y);ctx2d.rotate(p.rot*Math.PI/180);ctx2d.fillStyle=p.color;ctx2d.fillRect(-p.size/2,-p.size/2,p.size,p.size*0.5);ctx2d.restore();});particles=particles.filter(p=>p.y<canvas.height+20);if(particles.length>0)animFrame=requestAnimationFrame(animateConfetti);}
 
 // ═══════════════════════════════════════════════
 //  ROUTER & THEME
 // ═══════════════════════════════════════════════
-function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById('screen-'+id).classList.add('active'); }
-function hexToRgbParts(hex) { const c=hex.replace('#',''); return `${parseInt(c.substring(0,2),16)},${parseInt(c.substring(2,4),16)},${parseInt(c.substring(4,6),16)}`; }
-function applyTheme(themeKey) {
-  const t = THEMES[themeKey]; if (!t) return;
-  const root = document.documentElement.style;
-  root.setProperty('--primary', t.color); root.setProperty('--primary-dark', t.primaryDark); root.setProperty('--accent', t.accent);
-  root.setProperty('--bg', t.bg); root.setProperty('--surface', t.surface); root.setProperty('--surface2', t.surface2);
-  const pRgb = hexToRgbParts(t.color), aRgb = hexToRgbParts(t.accent);
-  root.setProperty('--primary-shadow', `rgba(${pRgb},0.4)`); root.setProperty('--primary-shadow-soft', `rgba(${pRgb},0.15)`); root.setProperty('--primary-shadow-weak', `rgba(${pRgb},0.12)`);
-  root.setProperty('--accent-shadow', `rgba(${aRgb},0.3)`); root.setProperty('--accent-shadow-soft', `rgba(${aRgb},0.08)`); root.setProperty('--accent-shadow-weak', `rgba(${aRgb},0.06)`);
-  document.getElementById('map-theme-label').textContent = t.emoji + ' ' + t.name;
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('screen-'+id).classList.add('active');}
+function hexToRgbParts(hex){const c=hex.replace('#','');return `${parseInt(c.substring(0,2),16)},${parseInt(c.substring(2,4),16)},${parseInt(c.substring(4,6),16)}`;}
+function applyTheme(themeKey){
+  const t=THEMES[themeKey]; if(!t)return;
+  const root=document.documentElement.style;
+  root.setProperty('--primary',t.color); root.setProperty('--primary-dark',t.primaryDark); root.setProperty('--accent',t.accent);
+  root.setProperty('--bg',t.bg); root.setProperty('--surface',t.surface); root.setProperty('--surface2',t.surface2);
+  const pRgb=hexToRgbParts(t.color),aRgb=hexToRgbParts(t.accent);
+  root.setProperty('--primary-shadow',`rgba(${pRgb},0.4)`); root.setProperty('--primary-shadow-soft',`rgba(${pRgb},0.15)`); root.setProperty('--primary-shadow-weak',`rgba(${pRgb},0.12)`);
+  root.setProperty('--accent-shadow',`rgba(${aRgb},0.3)`); root.setProperty('--accent-shadow-soft',`rgba(${aRgb},0.08)`); root.setProperty('--accent-shadow-weak',`rgba(${aRgb},0.06)`);
 }
 
 // ═══════════════════════════════════════════════
-//  MAP RENDER
+//  PLAYER SELECT SCREEN
+// ═══════════════════════════════════════════════
+function renderPlayerSelect() {
+  const grid = document.getElementById('players-grid');
+  grid.innerHTML = '';
+  players.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'player-card' + (p.totalAnswered > 0 || p.completed.length > 0 ? ' has-progress' : '');
+    const tablesDone = p.completed.length;
+    const acc = p.totalAnswered > 0 ? Math.round((p.totalCorrect/p.totalAnswered)*100) + '%' : '—';
+    card.innerHTML = `
+      <div class="player-avatar">${p.avatar}</div>
+      <div class="player-info">
+        <div class="player-name">${p.name}</div>
+        <div class="player-meta">Таблиц: ${tablesDone}/8 · Точность: ${acc}</div>
+      </div>
+      <div class="player-stars-badge">⭐ ${p.stars}</div>`;
+    card.addEventListener('click', () => { sfxClick(); selectPlayer(p.id); });
+    grid.appendChild(card);
+  });
+  if (players.length < MAX_PLAYERS) {
+    const add = document.createElement('div');
+    add.className = 'player-card player-add';
+    add.innerHTML = `<div class="player-avatar">➕</div><div class="player-info"><div class="player-name">Добавить игрока</div></div>`;
+    add.addEventListener('click', () => { sfxClick(); openEditPlayer(null); });
+    grid.appendChild(add);
+  }
+}
+
+function selectPlayer(id) {
+  currentPlayerId = id;
+  currentPlayer = getPlayer(id);
+  if (!currentPlayer.theme) {
+    selectedTheme = null;
+    openThemeScreen();
+  } else {
+    applyTheme(currentPlayer.theme);
+    renderMap();
+    showScreen('map');
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  EDIT PLAYER SCREEN
+// ═══════════════════════════════════════════════
+function openEditPlayer(id) {
+  editingPlayerId = id;
+  document.getElementById('edit-player-title').textContent = id ? 'Изменить игрока' : 'Новый игрок';
+  const picker = document.getElementById('avatar-picker');
+  picker.innerHTML = '';
+  const existing = id ? getPlayer(id) : null;
+  const selectedAvatar = existing ? existing.avatar : AVATARS[0];
+  AVATARS.forEach(a => {
+    const btn = document.createElement('button');
+    btn.className = 'avatar-opt' + (a === selectedAvatar ? ' selected' : '');
+    btn.textContent = a;
+    btn.addEventListener('click', () => { sfxClick(); document.querySelectorAll('.avatar-opt').forEach(x=>x.classList.remove('selected')); btn.classList.add('selected'); });
+    picker.appendChild(btn);
+  });
+  document.getElementById('player-name-input').value = existing ? existing.name : '';
+  showScreen('edit-player');
+}
+
+document.getElementById('edit-back').addEventListener('click', () => { sfxClick(); renderPlayerSelect(); showScreen('players'); });
+document.getElementById('edit-cancel-btn').addEventListener('click', () => { sfxClick(); renderPlayerSelect(); showScreen('players'); });
+document.getElementById('edit-save-btn').addEventListener('click', () => {
+  const name = document.getElementById('player-name-input').value.trim();
+  if (!name) { document.getElementById('player-name-input').focus(); return; }
+  const avatar = document.querySelector('.avatar-opt.selected')?.textContent || AVATARS[0];
+  sfxClick();
+  if (editingPlayerId) {
+    const p = getPlayer(editingPlayerId);
+    p.name = name; p.avatar = avatar;
+  } else {
+    players.push({ id: Date.now().toString(), name, avatar, ...PLAYER_DEFAULT() });
+  }
+  savePlayers();
+  renderPlayerSelect(); showScreen('players');
+});
+
+// ═══════════════════════════════════════════════
+//  THEME SCREEN
+// ═══════════════════════════════════════════════
+function openThemeScreen(fromMap = false) {
+  document.querySelectorAll('.theme-card').forEach(c=>c.classList.remove('selected'));
+  const active = currentPlayer?.theme || selectedTheme;
+  if (active) {
+    const card = document.querySelector(`[data-theme="${active}"]`);
+    if (card) card.classList.add('selected');
+    selectedTheme = active;
+  }
+  const backBtn = document.getElementById('theme-back');
+  const goBtn = document.getElementById('btn-theme-go');
+  document.getElementById('theme-sub').textContent = currentPlayer?.name ? `Тема для ${currentPlayer.name}` : 'Выбери тему';
+  if (fromMap || currentPlayer?.theme) { backBtn.classList.add('show'); goBtn.textContent = 'Сохранить →'; }
+  else { backBtn.classList.remove('show'); goBtn.textContent = 'Начать! →'; }
+  showScreen('theme');
+}
+document.querySelectorAll('.theme-card').forEach(card => card.addEventListener('click', () => { sfxClick(); document.querySelectorAll('.theme-card').forEach(c=>c.classList.remove('selected')); card.classList.add('selected'); selectedTheme = card.dataset.theme; }));
+document.getElementById('theme-back').addEventListener('click', () => { sfxClick(); if (currentPlayer) { renderMap(); showScreen('map'); } else { renderPlayerSelect(); showScreen('players'); } });
+document.getElementById('btn-theme-go').addEventListener('click', () => {
+  if (!selectedTheme) { document.querySelectorAll('.theme-card')[0].classList.add('selected'); selectedTheme = 'spiderman'; }
+  sfxClick();
+  if (currentPlayer) { currentPlayer.theme = selectedTheme; savePlayer(); applyTheme(selectedTheme); renderMap(); showScreen('map'); }
+});
+document.getElementById('btn-change-theme').addEventListener('click', () => { sfxClick(); openThemeScreen(true); });
+
+// ═══════════════════════════════════════════════
+//  MAP
 // ═══════════════════════════════════════════════
 function renderMap() {
-  const theme = THEMES[state.theme]; document.getElementById('star-count').textContent = state.stars; applyTheme(state.theme);
+  const p = currentPlayer;
+  const theme = THEMES[p.theme];
+  document.getElementById('star-count').textContent = p.stars;
+  document.getElementById('map-player-avatar').textContent = p.avatar;
+  document.getElementById('map-player-name').textContent = p.name;
+  applyTheme(p.theme);
   const container = document.getElementById('world-path'); container.innerHTML = '';
   theme.worlds.forEach((world, idx) => {
-    const table = world.n, isDone = state.completed.includes(table), isCurrent = table === state.unlocked, isLocked = table > state.unlocked;
-    if (idx > 0) { const conn = document.createElement('div'); conn.className = 'world-connector'; container.appendChild(conn); }
+    const table = world.n, isDone = p.completed.includes(table), isCurrent = table === p.unlocked, isLocked = table > p.unlocked;
+    if (idx > 0) { const conn = document.createElement('div'); conn.className='world-connector'; container.appendChild(conn); }
     const node = document.createElement('div');
     node.className = 'world-node' + (isLocked?' locked':'') + (isCurrent?' current':'') + (isDone?' done':'');
-    const iconBg = isLocked ? 'rgba(255,255,255,0.05)' : `color-mix(in srgb, var(--accent) 15%, var(--surface))`;
     node.innerHTML = `${isCurrent?'<div class="current-badge">👆 ТВОЯ ЦЕЛЬ</div>':''}
-      <div class="world-icon" style="background:${iconBg}">${isLocked?'🔒':world.icon}</div>
+      <div class="world-icon" style="background:${isLocked?'rgba(255,255,255,0.05)':'color-mix(in srgb,var(--accent) 15%,var(--surface))'}">${isLocked?'🔒':world.icon}</div>
       <div class="world-info"><div class="world-name">${world.name}</div><div class="world-label">${isLocked?'Закрыто':isDone?'Выучено ✅':'Открыто'}</div></div>
-      <div class="world-stars">${isDone?'⭐':''}</div><div class="world-table-num">× ${table}</div>`;
-    if (!isLocked) node.addEventListener('click', () => { sfxClick(); currentTable = table; studyIndex = 0; renderStudy(); showScreen('study'); });
+      <div>${isDone?'⭐':''}</div><div class="world-table-num">× ${table}</div>`;
+    if (!isLocked) node.addEventListener('click', () => { sfxClick(); currentTable=table; studyIndex=0; renderStudy(); showScreen('study'); });
     container.appendChild(node);
   });
 }
+// Click avatar/name → back to player select
+document.getElementById('map-player-avatar').addEventListener('click', () => { sfxClick(); stopMusic(); renderPlayerSelect(); showScreen('players'); });
+document.getElementById('map-player-name').addEventListener('click', () => { sfxClick(); stopMusic(); renderPlayerSelect(); showScreen('players'); });
 
 // ═══════════════════════════════════════════════
 //  STUDY FLOW
 // ═══════════════════════════════════════════════
 function renderStudy() {
-  const theme = THEMES[state.theme], worldCfg = theme.worlds.find(w => w.n === currentTable);
-  document.getElementById('study-icon').textContent = worldCfg ? worldCfg.icon : theme.emoji; renderStudyCard();
+  const theme = THEMES[currentPlayer.theme], worldCfg = theme.worlds.find(w=>w.n===currentTable);
+  document.getElementById('study-icon').textContent = worldCfg ? worldCfg.icon : theme.emoji;
+  renderStudyCard();
 }
 function renderStudyCard() {
-  const a = currentTable, b = studyIndex + 1;
-  document.getElementById('seq-a').textContent = a; document.getElementById('seq-b').textContent = b; document.getElementById('seq-r').textContent = a * b;
-  document.getElementById('study-counter').textContent = `${b} / 10`; document.getElementById('study-fill').style.width = `${b * 10}%`;
-  const dots = document.getElementById('study-dots'); dots.innerHTML = '';
-  for (let i = 1; i <= 10; i++) { const d = document.createElement('div'); d.className = 'study-dot' + (i <= b ? ' filled' : ''); dots.appendChild(d); }
-  document.getElementById('study-hint').textContent = ['Запомни!','Ещё раз!','Смотри внимательно!','Запоминаем!','Молодец!'][Math.floor(Math.random()*5)];
-  const nextBtn = document.getElementById('study-next');
-  nextBtn.textContent = 'Далее →'; nextBtn.className = 'btn-nav btn-next';
+  const a=currentTable, b=studyIndex+1;
+  document.getElementById('seq-a').textContent=a; document.getElementById('seq-b').textContent=b; document.getElementById('seq-r').textContent=a*b;
+  document.getElementById('study-counter').textContent=`${b} / 10`; document.getElementById('study-fill').style.width=`${b*10}%`;
+  const dots=document.getElementById('study-dots'); dots.innerHTML='';
+  for(let i=1;i<=10;i++){const d=document.createElement('div');d.className='study-dot'+(i<=b?' filled':'');dots.appendChild(d);}
+  document.getElementById('study-hint').textContent=['Запомни!','Ещё раз!','Смотри внимательно!','Запоминаем!','Молодец!'][Math.floor(Math.random()*5)];
+  const nextBtn=document.getElementById('study-next');
+  nextBtn.textContent='Далее →'; nextBtn.className='btn-nav btn-next';
 }
 document.getElementById('study-next').addEventListener('click', () => {
-  sfxClick();
-  studyIndex++;
-  if (studyIndex === 3 || studyIndex === 6) { startCheck('mini', 3); showScreen('test'); }
-  else if (studyIndex === 10) { startCheck('full', 10); showScreen('test'); }
-  else { renderStudyCard(); }
+  sfxClick(); studyIndex++;
+  if (studyIndex===3 || studyIndex===6) { startCheck('mini',3); showScreen('test'); }
+  else if (studyIndex===10) { startCheck('full',10); showScreen('test'); }
+  else renderStudyCard();
 });
-document.getElementById('study-prev').addEventListener('click', () => { sfxClick(); if (studyIndex > 0) { studyIndex--; renderStudyCard(); } });
+document.getElementById('study-prev').addEventListener('click', () => { sfxClick(); if(studyIndex>0){studyIndex--;renderStudyCard();} });
 document.getElementById('study-back').addEventListener('click', () => { sfxClick(); showScreen('map'); });
 
 // ═══════════════════════════════════════════════
-//  CHECK / TEST ENGINE [FIX] Robust navigation
+//  CHECK ENGINE
 // ═══════════════════════════════════════════════
-function generateOptions(correct, count = 4) {
-  const opts = new Set([correct]);
-  while (opts.size < count) {
-    const offset = Math.floor(Math.random() * 10) - 5;
-    const val = correct + offset;
-    if (val > 0 && val !== correct) opts.add(val);
-  }
-  return Array.from(opts).sort(() => Math.random() - 0.5);
+function generateOptions(correct, count=4) {
+  const opts=new Set([correct]);
+  while(opts.size<count){const v=correct+Math.floor(Math.random()*10)-5;if(v>0&&v!==correct)opts.add(v);}
+  return Array.from(opts).sort(()=>Math.random()-0.5);
 }
 function startCheck(type, count) {
-  checkPhase = type; checkIndex = 0; currentLives = 3; isCheckWaiting = false;
-  checkQuestions = [];
-  const pool = (type === 'final' && state.completed.length > 0) ? state.completed : [currentTable || 2];
-  for (let i = 0; i < count; i++) {
-    const tbl = pool[Math.floor(Math.random() * pool.length)];
-    const b = Math.floor(Math.random() * 10) + 1;
-    checkQuestions.push({ a: tbl, b, answer: tbl * b });
-  }
-  document.getElementById('hints-count').textContent = state.hints;
-  updateLivesUI();
-  renderCheckQuestion();
+  checkPhase=type; checkIndex=0; currentLives=3; isCheckWaiting=false; checkQuestions=[];
+  const pool = (type==='final'&&currentPlayer.completed.length>0) ? currentPlayer.completed : [currentTable||2];
+  for(let i=0;i<count;i++){const tbl=pool[Math.floor(Math.random()*pool.length)],b=Math.floor(Math.random()*10)+1;checkQuestions.push({a:tbl,b,answer:tbl*b});}
+  document.getElementById('hints-count').textContent=currentPlayer.hints;
+  updateLivesUI(); renderCheckQuestion();
 }
-function updateLivesUI() {
-  document.getElementById('check-lives').textContent = '❤️'.repeat(Math.max(0, currentLives)) + '🖤'.repeat(Math.max(0, 3 - currentLives));
-  document.getElementById('btn-buy-life').disabled = state.stars < 2;
+function updateLivesUI(){
+  document.getElementById('check-lives').textContent='❤️'.repeat(Math.max(0,currentLives))+'🖤'.repeat(Math.max(0,3-currentLives));
+  document.getElementById('hints-count').textContent=currentPlayer.hints;
 }
-function renderCheckQuestion() {
-  const q = checkQuestions[checkIndex]; currentCorrect = q.answer;
-  const theme = THEMES[state.theme], worldCfg = theme.worlds.find(w => w.n === (checkPhase==='final' ? q.a : currentTable));
-  document.getElementById('check-icon').textContent = worldCfg ? worldCfg.icon : theme.emoji;
-  document.getElementById('cq-a').textContent = q.a; document.getElementById('cq-b').textContent = q.b; document.getElementById('cq-blank').textContent = '?';
-  document.getElementById('check-prog-fill').style.width = ((checkIndex)/checkQuestions.length)*100 + '%';
-  document.getElementById('check-q-count').textContent = `Вопрос ${checkIndex + 1} из ${checkQuestions.length}`;
-  document.getElementById('check-feedback').textContent = ''; document.getElementById('check-feedback').className = 'check-feedback';
-  document.getElementById('btn-check-next').style.display = 'none';
-  const grid = document.getElementById('options-grid'); grid.innerHTML = '';
-  const opts = generateOptions(q.answer, 4);
-  opts.forEach(val => {
-    const btn = document.createElement('button'); btn.className = 'option-btn'; btn.textContent = val; btn.dataset.val = val;
-    btn.addEventListener('click', () => handleOptionClick(val, btn));
-    grid.appendChild(btn);
+function renderCheckQuestion(){
+  const q=checkQuestions[checkIndex]; currentCorrect=q.answer;
+  const theme=THEMES[currentPlayer.theme], worldCfg=theme.worlds.find(w=>w.n===(checkPhase==='final'?q.a:currentTable));
+  document.getElementById('check-icon').textContent=worldCfg?worldCfg.icon:theme.emoji;
+  document.getElementById('cq-a').textContent=q.a; document.getElementById('cq-b').textContent=q.b; document.getElementById('cq-blank').textContent='?';
+  document.getElementById('check-prog-fill').style.width=((checkIndex)/checkQuestions.length)*100+'%';
+  document.getElementById('check-q-count').textContent=`Вопрос ${checkIndex+1} из ${checkQuestions.length}`;
+  document.getElementById('check-feedback').textContent=''; document.getElementById('check-feedback').className='check-feedback';
+  document.getElementById('btn-check-next').style.display='none';
+  const grid=document.getElementById('options-grid'); grid.innerHTML='';
+  generateOptions(q.answer,4).forEach(val=>{
+    const btn=document.createElement('button'); btn.className='option-btn'; btn.textContent=val; btn.dataset.val=val;
+    btn.addEventListener('click',()=>handleOptionClick(val,btn)); grid.appendChild(btn);
   });
-  document.getElementById('btn-use-hint').disabled = state.hints <= 0 && state.stars < 1;
-  updateLivesUI();
+  document.getElementById('btn-use-hint').disabled=currentPlayer.hints<=0;
 }
 function handleOptionClick(val, btn) {
-  if (isCheckWaiting) return;
-  const allBtns = document.querySelectorAll('.option-btn');
-  if (val === currentCorrect) {
+  if(isCheckWaiting)return;
+  const allBtns=document.querySelectorAll('.option-btn');
+  if(val===currentCorrect){
     sfxCorrect(); btn.classList.add('correct');
-    document.getElementById('cq-blank').textContent = currentCorrect;
-    document.getElementById('check-feedback').textContent = 'Молодец! ⭐+1'; document.getElementById('check-feedback').className = 'check-feedback ok';
-    state.stars++; state.totalCorrect++; state.totalAnswered++; saveState();
-    document.getElementById('star-count').textContent = state.stars;
-    isCheckWaiting = true; allBtns.forEach(b => b.style.pointerEvents = 'none');
-    document.getElementById('btn-check-next').style.display = 'block';
+    document.getElementById('cq-blank').textContent=currentCorrect;
+    document.getElementById('check-feedback').textContent='Молодец! ⭐+1'; document.getElementById('check-feedback').className='check-feedback ok';
+    currentPlayer.stars++; currentPlayer.totalCorrect++; currentPlayer.totalAnswered++; savePlayer();
+    document.getElementById('star-count').textContent=currentPlayer.stars;
+    isCheckWaiting=true; allBtns.forEach(b=>b.style.pointerEvents='none');
+    document.getElementById('btn-check-next').style.display='block';
   } else {
     sfxWrong(); btn.classList.add('wrong');
-    currentLives--; updateLivesUI(); state.totalAnswered++; saveState();
-    const key = `${checkQuestions[checkIndex].a}x${checkQuestions[checkIndex].b}`;
-    state.mistakes[key] = (state.mistakes[key] || 0) + 1; saveState();
-    if (currentLives <= 0) { showLivesOutModal(); }
-    else { document.getElementById('check-feedback').textContent = `Неверно! Осталось ❤️${currentLives}`; document.getElementById('check-feedback').className = 'check-feedback err'; }
+    currentLives--; updateLivesUI(); currentPlayer.totalAnswered++;
+    const key=`${checkQuestions[checkIndex].a}x${checkQuestions[checkIndex].b}`;
+    currentPlayer.mistakes[key]=(currentPlayer.mistakes[key]||0)+1; savePlayer();
+    if(currentLives<=0){
+      isCheckWaiting=true; allBtns.forEach(b=>b.style.pointerEvents='none');
+      document.getElementById('check-feedback').textContent=`Игра окончена! ${checkQuestions[checkIndex].a}×${checkQuestions[checkIndex].b}=${currentCorrect}`; document.getElementById('check-feedback').className='check-feedback err';
+      document.getElementById('btn-check-next').textContent='Начать снова'; document.getElementById('btn-check-next').style.display='block';
+      document.getElementById('btn-check-next').onclick=()=>{sfxClick();startCheck(checkPhase,checkQuestions.length);};
+    } else {
+      document.getElementById('check-feedback').textContent=`Неверно! Осталось ❤️${currentLives}`; document.getElementById('check-feedback').className='check-feedback err';
+    }
   }
 }
 document.getElementById('btn-check-next').addEventListener('click', () => {
-  sfxClick(); checkIndex++; isCheckWaiting = false;
-  if (checkIndex < checkQuestions.length) renderCheckQuestion();
-  else finishCheck();
+  if(document.getElementById('btn-check-next').textContent==='Начать снова')return;
+  sfxClick(); checkIndex++; isCheckWaiting=false;
+  if(checkIndex<checkQuestions.length)renderCheckQuestion(); else finishCheck();
 });
 document.getElementById('btn-use-hint').addEventListener('click', () => {
-  if (state.hints > 0) state.hints--;
-  else if (state.stars >= 1) { state.stars--; document.getElementById('star-count').textContent = state.stars; }
-  else return;
-  saveState(); document.getElementById('hints-count').textContent = state.hints;
-  const btns = Array.from(document.querySelectorAll('.option-btn')).filter(b => !b.classList.contains('correct') && parseInt(b.dataset.val) !== currentCorrect);
-  btns.sort(() => Math.random() - 0.5).slice(0, 2).forEach(b => b.classList.add('hidden'));
-  document.getElementById('btn-use-hint').disabled = state.hints <= 0 && state.stars < 1;
-  sfxClick();
-});
-document.getElementById('btn-buy-life').addEventListener('click', () => {
-  if (state.stars >= 2 && currentLives < 3) {
-    state.stars -= 2; currentLives++; saveState();
-    document.getElementById('star-count').textContent = state.stars; updateLivesUI(); sfxClick();
-  }
-});
-function showLivesOutModal() {
-  const q = checkQuestions[checkIndex];
-  document.getElementById('lives-modal-text').textContent = `Правильный ответ: ${q.a} × ${q.b} = ${q.answer}`;
-  document.getElementById('lives-modal').classList.add('show');
-}
-document.getElementById('btn-retry-check').addEventListener('click', () => {
-  document.getElementById('lives-modal').classList.remove('show');
-  sfxClick(); startCheck(checkPhase, checkQuestions.length);
+  if(currentPlayer.hints<=0)return;
+  currentPlayer.hints--; savePlayer(); document.getElementById('hints-count').textContent=currentPlayer.hints;
+  const btns=Array.from(document.querySelectorAll('.option-btn')).filter(b=>!b.classList.contains('correct')&&parseInt(b.dataset.val)!==currentCorrect);
+  btns.sort(()=>Math.random()-0.5).slice(0,2).forEach(b=>b.classList.add('hidden'));
+  document.getElementById('btn-use-hint').disabled=currentPlayer.hints<=0; sfxClick();
 });
 
-// [FIX] Completely rewritten finishCheck for reliable navigation
-function finishCheck() {
-  const theme = THEMES[state.theme] || THEMES.spiderman;
-  const worldCfg = theme.worlds.find(w => w.n === currentTable) || { icon: '🏆', name: '' };
-  
-  // Reset result screen UI safely
-  document.getElementById('result-mistakes').style.display = 'none';
-  document.getElementById('result-btn-retry').style.display = 'none';
-  document.getElementById('result-score-label').textContent = `из ${checkQuestions.length}`;
-  document.getElementById('result-score').textContent = checkQuestions.length;
+function finishCheck(){
+  const p=currentPlayer, theme=THEMES[p.theme], worldCfg=theme.worlds.find(w=>w.n===currentTable)||{icon:'🏆'};
+  document.getElementById('result-mistakes').style.display='none';
+  document.getElementById('result-btn-retry').style.display='none';
+  document.getElementById('result-total').textContent=checkQuestions.length;
+  document.getElementById('result-score').textContent=checkQuestions.length;
 
-  if (checkPhase === 'final') {
+  if(checkPhase==='final'){
     sfxVictory(); launchConfetti();
-    document.getElementById('result-icon').textContent = '🏆';
-    document.getElementById('result-title').textContent = 'ФИНАЛЬНЫЙ ТЕСТ ПРОЙДЕН!';
-    document.getElementById('result-sub').textContent = 'Ты настоящий мастер умножения!';
-    document.getElementById('result-btn-main').textContent = 'На карту →';
-    document.getElementById('result-btn-main').onclick = () => { sfxClick(); renderMap(); showScreen('map'); };
+    document.getElementById('result-icon').textContent='🏆';
+    document.getElementById('result-title').textContent='ФИНАЛЬНЫЙ ТЕСТ ПРОЙДЕН!';
+    document.getElementById('result-sub').textContent='Ты настоящий мастер умножения!';
+    document.getElementById('result-btn-main').textContent='На карту →';
+    document.getElementById('result-btn-main').onclick=()=>{sfxClick();renderMap();showScreen('map');};
     showScreen('result'); return;
   }
-
   sfxVictory(); launchConfetti();
-  document.getElementById('result-icon').textContent = worldCfg.icon;
-  
-  if (checkPhase === 'full') {
-    document.getElementById('result-title').textContent = theme.victory;
-    document.getElementById('result-sub').textContent = 'Таблица выучена! ⭐';
-    document.getElementById('result-btn-main').textContent = 'Продолжить →';
-    if (!state.completed.includes(currentTable)) {
-      state.completed.push(currentTable); state.stars++;
-      const nextTable = currentTable + 1, worldsMax = Math.max(...theme.worlds.map(w => w.n));
-      if (nextTable <= worldsMax && state.unlocked < nextTable) state.unlocked = nextTable;
-      saveState();
+  document.getElementById('result-icon').textContent=worldCfg.icon;
+  if(checkPhase==='full'){
+    document.getElementById('result-title').textContent=theme.victory;
+    document.getElementById('result-sub').textContent='Таблица выучена! ⭐';
+    document.getElementById('result-btn-main').textContent='Продолжить →';
+    if(!p.completed.includes(currentTable)){
+      p.completed.push(currentTable); p.stars++;
+      const nextTable=currentTable+1, worldsMax=Math.max(...theme.worlds.map(w=>w.n));
+      if(nextTable<=worldsMax&&p.unlocked<nextTable)p.unlocked=nextTable;
+      savePlayer();
     }
-    document.getElementById('result-btn-main').onclick = () => {
+    document.getElementById('result-btn-main').onclick=()=>{
       sfxClick();
-      if (state.completed.length >= 3 && !state.finalTestDone) {
-        state.finalTestDone = true; saveState();
-        startCheck('final', 15); showScreen('test');
-      } else {
-        renderMap(); showScreen('map');
-      }
+      if(p.completed.length>=3){startCheck('final',15);showScreen('test');}
+      else{renderMap();showScreen('map');}
     };
-  } else { // mini
-    document.getElementById('result-title').textContent = 'Проверка пройдена!';
-    document.getElementById('result-sub').textContent = 'Отличная работа! Продолжаем запоминать.';
-    document.getElementById('result-btn-main').textContent = 'Продолжить учёбу →';
-    document.getElementById('result-btn-main').onclick = () => { sfxClick(); renderStudy(); showScreen('study'); };
+  } else {
+    document.getElementById('result-title').textContent='Проверка пройдена!';
+    document.getElementById('result-sub').textContent='Отличная работа! Продолжаем.';
+    document.getElementById('result-btn-main').textContent='Продолжить учёбу →';
+    document.getElementById('result-btn-main').onclick=()=>{sfxClick();studyIndex=0;renderStudy();showScreen('study');};
   }
-  
   showScreen('result');
 }
 
 // ═══════════════════════════════════════════════
-//  THEME SELECTION
+//  UNLOCK SCREEN
 // ═══════════════════════════════════════════════
-document.querySelectorAll('.theme-card').forEach(card => card.addEventListener('click', () => { sfxClick(); document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('selected')); card.classList.add('selected'); selectedTheme = card.dataset.theme; }));
-function openThemeScreen() {
-  document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('selected'));
-  const activeTheme = state.theme || selectedTheme;
-  if (activeTheme) { const card = document.querySelector(`[data-theme="${activeTheme}"]`); if (card) card.classList.add('selected'); selectedTheme = activeTheme; } else selectedTheme = null;
-  const backBtn = document.getElementById('theme-back'), goBtn = document.getElementById('btn-go');
-  if (state.theme) { backBtn.classList.add('show'); goBtn.textContent = 'Сохранить →'; } else { backBtn.classList.remove('show'); goBtn.textContent = 'Начать! →'; }
-  showScreen('theme');
-}
-document.getElementById('theme-back').addEventListener('click', () => { sfxClick(); showScreen('map'); });
-document.getElementById('btn-change-theme').addEventListener('click', () => { sfxClick(); openThemeScreen(); });
-document.getElementById('btn-go').addEventListener('click', () => {
-  if (!selectedTheme) { document.querySelectorAll('.theme-card')[0].classList.add('selected'); selectedTheme = 'spiderman'; }
-  sfxClick(); state.theme = selectedTheme; saveState(); applyTheme(selectedTheme); renderMap(); showScreen('map');
-});
-document.getElementById('btn-music').addEventListener('click', toggleMusic);
-document.getElementById('btn-music-study').addEventListener('click', toggleMusic);
-document.getElementById('btn-music-test').addEventListener('click', toggleMusic);
+document.getElementById('btn-unlock-ok').addEventListener('click',()=>{sfxClick();renderMap();showScreen('map');});
 
 // ═══════════════════════════════════════════════
-//  PIN & PARENT
+//  PIN SYSTEM
 // ═══════════════════════════════════════════════
-let pinBuffer = '', pinMode = 'check', pinTemp = '';
-function openPin() { pinBuffer = ''; pinMode = state.pinSet ? 'check' : 'set1'; updatePinDisplay(); document.getElementById('pin-title').textContent = pinMode === 'check' ? 'Введите PIN' : 'Создайте PIN'; document.getElementById('pin-sub').textContent = pinMode === 'check' ? 'Для входа в кабинет родителя' : 'Придумайте 4-значный PIN'; document.getElementById('pin-error').textContent = ''; document.getElementById('pin-overlay').classList.add('show'); }
-function updatePinDisplay() { for (let i = 0; i < 4; i++) document.getElementById('pd' + i).classList.toggle('filled', i < pinBuffer.length); }
-document.getElementById('pin-keypad').addEventListener('click', e => {
-  const btn = e.target.closest('.pin-key'); if (!btn) return; const k = btn.dataset.k; if (!k) return;
-  if (k === 'del') { pinBuffer = pinBuffer.slice(0, -1); updatePinDisplay(); return; }
-  if (pinBuffer.length >= 4) return; pinBuffer += k; sfxClick(); updatePinDisplay();
-  if (pinBuffer.length === 4) setTimeout(() => handlePinComplete(), 150);
+let pinBuffer='', pinMode='check', pinTemp='', pinCallback=null;
+function openPin(callback){
+  pinCallback=callback; pinBuffer=''; pinMode=global.pinSet?'check':'set1'; updatePinDisplay();
+  document.getElementById('pin-title').textContent=pinMode==='check'?'Введите PIN':'Создайте PIN';
+  document.getElementById('pin-sub').textContent=pinMode==='check'?'Для входа в кабинет администратора':'Придумайте 4-значный PIN';
+  document.getElementById('pin-error').textContent='';
+  document.getElementById('pin-overlay').classList.add('show');
+}
+function updatePinDisplay(){for(let i=0;i<4;i++)document.getElementById('pd'+i).classList.toggle('filled',i<pinBuffer.length);}
+document.getElementById('pin-keypad').addEventListener('click',e=>{
+  const btn=e.target.closest('.pin-key'); if(!btn)return; const k=btn.dataset.k; if(!k)return;
+  if(k==='del'){pinBuffer=pinBuffer.slice(0,-1);updatePinDisplay();return;}
+  if(pinBuffer.length>=4)return; pinBuffer+=k; sfxClick(); updatePinDisplay();
+  if(pinBuffer.length===4)setTimeout(()=>handlePinComplete(),150);
 });
-function handlePinComplete() {
-  if (pinMode === 'check') {
-    if (pinBuffer === state.pin) { document.getElementById('pin-overlay').classList.remove('show'); renderParent(); showScreen('parent'); }
-    else { document.getElementById('pin-error').textContent = 'Неверный PIN!'; pinBuffer = ''; updatePinDisplay(); sfxWrong(); }
-  } else if (pinMode === 'set1') { pinTemp = pinBuffer; pinBuffer = ''; pinMode = 'confirming'; document.getElementById('pin-title').textContent = 'Повторите PIN'; document.getElementById('pin-sub').textContent = 'Введите PIN ещё раз'; document.getElementById('pin-error').textContent = ''; updatePinDisplay(); }
-  else if (pinMode === 'confirming') {
-    if (pinBuffer === pinTemp) { state.pin = pinBuffer; state.pinSet = true; saveState(); document.getElementById('pin-overlay').classList.remove('show'); renderParent(); showScreen('parent'); }
-    else { document.getElementById('pin-error').textContent = 'PIN не совпадает!'; pinBuffer = ''; pinTemp = ''; pinMode = 'set1'; document.getElementById('pin-title').textContent = 'Создайте PIN'; document.getElementById('pin-sub').textContent = 'Попробуйте ещё раз'; updatePinDisplay(); sfxWrong(); }
+function handlePinComplete(){
+  if(pinMode==='check'){
+    if(pinBuffer===global.pin){document.getElementById('pin-overlay').classList.remove('show');if(pinCallback)pinCallback();}
+    else{document.getElementById('pin-error').textContent='Неверный PIN!';pinBuffer='';updatePinDisplay();sfxWrong();}
+  } else if(pinMode==='set1'){
+    pinTemp=pinBuffer; pinBuffer=''; pinMode='confirming';
+    document.getElementById('pin-title').textContent='Повторите PIN'; document.getElementById('pin-sub').textContent='Введите PIN ещё раз';
+    document.getElementById('pin-error').textContent=''; updatePinDisplay();
+  } else if(pinMode==='confirming'){
+    if(pinBuffer===pinTemp){
+      global.pin=pinBuffer; global.pinSet=true; saveGlobal();
+      document.getElementById('pin-overlay').classList.remove('show'); if(pinCallback)pinCallback();
+    } else {
+      document.getElementById('pin-error').textContent='PIN не совпадает!'; pinBuffer=''; pinTemp=''; pinMode='set1';
+      document.getElementById('pin-title').textContent='Создайте PIN'; document.getElementById('pin-sub').textContent='Попробуйте ещё раз'; updatePinDisplay(); sfxWrong();
+    }
   }
 }
-document.getElementById('pin-cancel').addEventListener('click', () => document.getElementById('pin-overlay').classList.remove('show'));
-document.getElementById('btn-to-parent').addEventListener('click', () => { sfxClick(); openPin(); });
-document.getElementById('parent-back').addEventListener('click', () => { sfxClick(); renderMap(); showScreen('map'); });
+document.getElementById('pin-cancel').addEventListener('click',()=>document.getElementById('pin-overlay').classList.remove('show'));
 
-function renderParent() {
-  document.getElementById('stat-total').textContent = state.totalAnswered; document.getElementById('stat-stars').textContent = state.stars; document.getElementById('stat-tables').textContent = state.completed.length;
-  document.getElementById('stat-accuracy').textContent = state.totalAnswered > 0 ? Math.round((state.totalCorrect / state.totalAnswered) * 100) + '%' : '—';
-  const mistakeEntries = Object.entries(state.mistakes).sort((a, b) => b[1] - a[1]).slice(0, 5);
-  const hardEl = document.getElementById('hard-items');
-  if (mistakeEntries.length === 0) hardEl.innerHTML = '<div style="color:var(--text3);font-size:14px;padding:8px 0">Ошибок пока нет 🎉</div>';
-  else hardEl.innerHTML = mistakeEntries.map(([key, count], i) => { const [a, b] = key.split('x'); const medals = ['🥇','🥈','🥉','4️⃣','5️⃣']; return `<div class="hard-item"><span class="hard-ex">${medals[i]} ${a} × ${b} = ${+a * +b}</span><span class="hard-count">${count} ошиб${count === 1 ? 'ка' : count < 5 ? 'ки' : 'ок'}</span></div>`; }).join('');
+// ═══════════════════════════════════════════════
+//  ADMIN SCREEN
+// ═══════════════════════════════════════════════
+document.getElementById('btn-admin-entry').addEventListener('click',()=>{sfxClick();openPin(()=>openAdmin());});
+document.getElementById('admin-back').addEventListener('click',()=>{sfxClick();renderPlayerSelect();showScreen('players');});
+
+document.querySelectorAll('.admin-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    sfxClick();
+    document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.admin-panel').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-'+tab.dataset.tab).classList.add('active');
+  });
+});
+
+function openAdmin(){renderAdmin();showScreen('admin');}
+
+function renderAdmin(){renderAdminOverview();renderAdminPlayers();renderAdminHard();}
+
+function renderAdminOverview(){
+  const totalAnswered=players.reduce((s,p)=>s+p.totalAnswered,0);
+  const totalCorrect=players.reduce((s,p)=>s+p.totalCorrect,0);
+  const totalStars=players.reduce((s,p)=>s+p.stars,0);
+  const totalTables=players.reduce((s,p)=>s+p.completed.length,0);
+  const acc=totalAnswered>0?Math.round((totalCorrect/totalAnswered)*100)+'%':'—';
+  document.getElementById('stats-total-grid').innerHTML=`
+    <div class="stat-card"><div class="stat-label">ПРИМЕРОВ РЕШЕНО</div><div class="stat-value">${totalAnswered}</div><div class="stat-icon">📊</div></div>
+    <div class="stat-card"><div class="stat-label">ЗВЁЗДЫ (все)</div><div class="stat-value">${totalStars}</div><div class="stat-icon">⭐</div></div>
+    <div class="stat-card"><div class="stat-label">ТАБЛИЦ ВЫУЧЕНО</div><div class="stat-value">${totalTables}</div><div class="stat-icon">📚</div></div>
+    <div class="stat-card"><div class="stat-label">ТОЧНОСТЬ (все)</div><div class="stat-value">${acc}</div><div class="stat-icon">🎯</div></div>
+  `;
 }
-document.getElementById('btn-give-hints').addEventListener('click', () => {
-  state.hints += 3; saveState(); renderParent(); sfxCorrect();
-  showConfirm('Подсказки добавлены!', `Теперь у ребёнка ${state.hints} 💡. Они помогут убрать неверные варианты в проверках.`, null);
+
+function renderAdminPlayers(){
+  const list=document.getElementById('admin-players-list'); list.innerHTML='';
+  players.forEach(p=>{
+    const row=document.createElement('div'); row.className='admin-player-row';
+    const acc=p.totalAnswered>0?Math.round((p.totalCorrect/p.totalAnswered)*100)+'%':'—';
+    row.innerHTML=`
+      <div class="ap-avatar">${p.avatar}</div>
+      <div class="ap-info">
+        <div class="ap-name">${p.name}</div>
+        <div class="ap-meta">Таблиц: ${p.completed.length}/8 · ⭐${p.stars} · ${acc} · 💡${p.hints}</div>
+      </div>
+      <div class="ap-actions">
+        <button class="ap-btn ap-btn-hints" title="Дать подсказки">💡+3</button>
+        <button class="ap-btn ap-btn-reset" title="Сброс статистики">↺</button>
+        <button class="ap-btn ap-btn-del" title="Удалить">🗑</button>
+      </div>`;
+    row.querySelector('.ap-btn-hints').addEventListener('click',()=>{sfxClick();p.hints+=3;savePlayer();renderAdmin();});
+    row.querySelector('.ap-btn-reset').addEventListener('click',()=>{
+      showConfirm(`Сбросить прогресс ${p.name}?`,'Все звёзды, таблицы и статистика будут удалены.',()=>{
+        const id=p.id,av=p.avatar,name=p.name;
+        Object.assign(p,{...PLAYER_DEFAULT(),id,avatar:av,name,theme:p.theme}); savePlayer(); renderAdmin(); sfxFail();
+      });
+    });
+    row.querySelector('.ap-btn-del').addEventListener('click',()=>{
+      showConfirm(`Удалить игрока ${p.name}?`,'Все данные игрока будут удалены навсегда.',()=>{
+        players=players.filter(x=>x.id!==p.id); savePlayers(); renderAdmin(); sfxFail();
+      });
+    });
+    list.appendChild(row);
+  });
+  if(players.length===0)list.innerHTML='<div style="color:var(--text3);text-align:center;padding:20px">Нет игроков</div>';
+}
+
+function renderAdminHard(){
+  const allMistakes={};
+  players.forEach(p=>{Object.entries(p.mistakes).forEach(([key,cnt])=>{allMistakes[key]=(allMistakes[key]||0)+cnt;});});
+  const entries=Object.entries(allMistakes).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  const el=document.getElementById('hard-items-all');
+  if(entries.length===0){el.innerHTML='<div style="color:var(--text3);font-size:14px;padding:8px 0">Ошибок пока нет 🎉</div>';return;}
+  el.innerHTML=entries.map(([key,count],i)=>{
+    const[a,b]=key.split('x');
+    const medals=['🥇','🥈','🥉','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣'];
+    return `<div class="hard-item"><span class="hard-ex">${medals[i]||'▸'} ${a} × ${b} = ${+a * +b}</span><span class="hard-count">${count} ошиб${count===1?'ка':count<5?'ки':'ок'}</span></div>`;
+  }).join('');
+}
+
+document.getElementById('btn-give-hints-all').addEventListener('click',()=>{
+  sfxClick(); players.forEach(p=>p.hints+=3); savePlayers(); renderAdmin();
+  showConfirm('Готово!','Всем игрокам добавлено по 3 подсказки 💡',null);
+});
+document.getElementById('btn-reset-all-mistakes').addEventListener('click',()=>{
+  showConfirm('Сбросить статистику ошибок?','Все счётчики ошибок будут обнулены. Прогресс и звёзды сохранятся.',()=>{
+    players.forEach(p=>{p.mistakes={};p.totalAnswered=0;p.totalCorrect=0;}); savePlayers(); renderAdmin(); sfxCorrect();
+  });
+});
+document.getElementById('btn-full-reset-all').addEventListener('click',()=>{
+  showConfirm('⚠️ ПОЛНЫЙ СБРОС?','Весь прогресс ВСЕХ игроков будет удалён навсегда!',()=>{
+    players.forEach(p=>{const id=p.id,av=p.avatar,name=p.name,theme=p.theme;Object.assign(p,{...PLAYER_DEFAULT(),id,avatar:av,name,theme});});
+    savePlayers(); renderAdmin(); sfxFail();
+  });
 });
 
 // ═══════════════════════════════════════════════
-//  MODALS & RESET
+//  CONFIRM MODAL
 // ═══════════════════════════════════════════════
-let confirmCallback = null;
-function showConfirm(title, text, callback) {
-  document.getElementById('modal-title').textContent = title; document.getElementById('modal-text').textContent = text;
-  confirmCallback = callback; document.getElementById('confirm-modal').classList.add('show');
+let confirmCallback=null;
+function showConfirm(title,text,callback){
+  document.getElementById('modal-title').textContent=title; document.getElementById('modal-text').textContent=text;
+  confirmCallback=callback; document.getElementById('confirm-modal').classList.add('show');
+  document.getElementById('modal-confirm').style.display=callback?'':'none';
 }
-document.getElementById('modal-cancel').addEventListener('click', () => { document.getElementById('confirm-modal').classList.remove('show'); confirmCallback = null; });
-document.getElementById('modal-confirm').addEventListener('click', () => { document.getElementById('confirm-modal').classList.remove('show'); if (confirmCallback) confirmCallback(); confirmCallback = null; });
+document.getElementById('modal-cancel').addEventListener('click',()=>{document.getElementById('confirm-modal').classList.remove('show');confirmCallback=null;});
+document.getElementById('modal-confirm').addEventListener('click',()=>{document.getElementById('confirm-modal').classList.remove('show');if(confirmCallback)confirmCallback();confirmCallback=null;});
 
-document.getElementById('btn-reset-mistakes').addEventListener('click', () => {
-  showConfirm('Сбросить ошибки?', 'Статистика ошибок обнулится. Звёзды и прогресс сохранятся.', () => {
-    state.mistakes = {}; state.totalAnswered = 0; state.totalCorrect = 0; saveState(); renderParent(); sfxCorrect();
-  });
-});
-document.getElementById('btn-full-reset').addEventListener('click', () => {
-  showConfirm('Начать заново?', 'Все звёзды, миры и прогресс будут удалены! Это действие нельзя отменить.', () => {
-    const theme = state.theme, pin = state.pin, pinSet = state.pinSet;
-    Object.assign(state, { ...DEFAULT_STATE, theme, pin, pinSet }); saveState(); renderParent(); sfxFail();
-  });
-});
+// ═══════════════════════════════════════════════
+//  MUSIC BUTTONS
+// ═══════════════════════════════════════════════
+document.getElementById('btn-music').addEventListener('click',toggleMusic);
+document.getElementById('btn-music-study').addEventListener('click',toggleMusic);
+document.getElementById('btn-music-test').addEventListener('click',toggleMusic);
 
 // ═══════════════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════════════
-function init() { if (state.theme) { applyTheme(state.theme); selectedTheme = state.theme; renderMap(); showScreen('map'); } else openThemeScreen(); }
-init();
+renderPlayerSelect();
+showScreen('players');
+
 })();
 </script>
 </body>
