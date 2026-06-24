@@ -737,7 +737,6 @@ function openThemeScreen(fromMap = false) {
   document.getElementById('theme-sub').textContent = currentPlayer?.name ? `Тема для ${currentPlayer.name}` : 'Выбери тему';
   if (fromMap || currentPlayer?.theme) { backBtn.classList.add('show'); goBtn.textContent = 'Сохранить →'; }
   else { backBtn.classList.remove('show'); goBtn.textContent = 'Начать! →'; }
-  else { backBtn.classList.remove('show'); goBtn.textContent = 'Начать! →'; }
   showScreen('theme');
 }
 document.querySelectorAll('.theme-card').forEach(card => card.addEventListener('click', () => { sfxClick(); document.querySelectorAll('.theme-card').forEach(c=>c.classList.remove('selected')); card.classList.add('selected'); selectedTheme = card.dataset.theme; }));
@@ -937,6 +936,8 @@ function openPin(callback){
   document.getElementById('pin-sub').textContent=pinMode==='check'?'Для входа в кабинет администратора':'Придумайте 4-значный PIN';
   document.getElementById('pin-error').textContent='';
   document.getElementById('pin-overlay').classList.add('show');
+  // Кнопка отмены сбрасывает callback
+  document.getElementById('pin-cancel').onclick=()=>{document.getElementById('pin-overlay').classList.remove('show');pinCallback=null;};
 }
 function updatePinDisplay(){for(let i=0;i<4;i++)document.getElementById('pd'+i).classList.toggle('filled',i<pinBuffer.length);}
 document.getElementById('pin-keypad').addEventListener('click',e=>{
@@ -963,12 +964,19 @@ function handlePinComplete(){
     }
   }
 }
-document.getElementById('pin-cancel').addEventListener('click',()=>document.getElementById('pin-overlay').classList.remove('show'));
+
+document.getElementById('pin-cancel').addEventListener('click',()=>{document.getElementById('pin-overlay').classList.remove('show');pinCallback=null;});
 
 // ═══════════════════════════════════════════════
 //  ADMIN SCREEN
 // ═══════════════════════════════════════════════
 document.getElementById('btn-admin-entry').addEventListener('click',()=>{sfxClick();openPin(()=>openAdmin());});
+// Долгое нажатие — сброс PIN (если забыл)
+let adminLongPress;
+document.getElementById('btn-admin-entry').addEventListener('touchstart',()=>{adminLongPress=setTimeout(()=>{sfxClick();global={pin:'1234',pinSet:false};saveGlobal();openAdmin();},2000);});
+document.getElementById('btn-admin-entry').addEventListener('touchend',()=>clearTimeout(adminLongPress));
+document.getElementById('btn-admin-entry').addEventListener('mousedown',()=>{adminLongPress=setTimeout(()=>{sfxClick();global={pin:'1234',pinSet:false};saveGlobal();openAdmin();},2000);});
+document.getElementById('btn-admin-entry').addEventListener('mouseup',()=>clearTimeout(adminLongPress));
 document.getElementById('admin-back').addEventListener('click',()=>{sfxClick();stopMusic();currentPlayerId=null;currentPlayer=null;if(global.pinSet){openPin(()=>{renderPlayerSelect();showScreen('players');});}else{renderPlayerSelect();showScreen('players');}});
 
 document.querySelectorAll('.admin-tab').forEach(tab=>{
